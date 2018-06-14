@@ -44,7 +44,7 @@ Content-Type: application/json; charset=UTF-8
     ], 
     "owner": "broker", 
     "id": "11d5b0fcb829464cb0cbb082ebbc437a", 
-    "participationUrl": "http://auction-sandbox.openprocurement.org/sspinsider-auctions/dea1897bef8e477799e5d6111f1f83b4/login?bidder_id=11d5b0fcb829464cb0cbb082ebbc437a&signature=MhCroCffN8lHo7dSnDIJ%2BghDOuyO3lZJhRZyxqLvEcj3w6zLoSL2JnZK0Gmjv69Ter7IWfeTNKdes%2BERxIfgBg%3D%3D"
+    "participationUrl": "http://auction-sandbox.openprocurement.org/tessel-auctions/dea1897bef8e477799e5d6111f1f83b4/login?bidder_id=11d5b0fcb829464cb0cbb082ebbc437a&signature=MhCroCffN8lHo7dSnDIJ%2BghDOuyO3lZJhRZyxqLvEcj3w6zLoSL2JnZK0Gmjv69Ter7IWfeTNKdes%2BERxIfgBg%3D%3D"
   }
 }
 

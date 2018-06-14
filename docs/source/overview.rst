@@ -1,7 +1,7 @@
 Overview
 ========
 
-openprocurement.auctions.sspinsider contains documentaion concerning the new type of the Deposit Guarantee Fund auctions.
+openprocurement.auctions.tessel contains documentaion concerning the new type of the Deposit Guarantee Fund auctions.
 
 The procedure to be used is **dgfInsider** which states for the insolvent bank property and the creditor claim right.
 
@@ -54,7 +54,7 @@ Project status
 The project has pre alpha status.
 
 The source repository for this project is on GitHub: 
-`<https://github.com/openprocurement/openprocurement.auctions.sspinsider>`_.
+`<https://github.com/openprocurement/openprocurement.auctions.tessel>`_.
  
 
 Documentation of related packages

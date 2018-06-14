@@ -5,13 +5,13 @@ version = '0.1.9'
 
 entry_points = {
     'openprocurement.auctions.core.plugins': [
-        'auctions.sspinsider = openprocurement.auctions.sspinsider.includeme:includeme'
+        'auctions.tessel = openprocurement.auctions.tessel.includeme:includeme'
     ],
     'openprocurement.api.migrations': [
-        'auctions.sspinsider = openprocurement.auctions.sspinsider.migration:migrate_data'
+        'auctions.tessel = openprocurement.auctions.tessel.migration:migrate_data'
     ],
     'openprocurement.tests': [
-        'auctions.sspinsider = openprocurement.auctions.sspinsider.tests.main:suite'
+        'auctions.tessel = openprocurement.auctions.tessel.tests.main:suite'
     ]
 }
 
@@ -27,7 +27,7 @@ docs_requires = requires + [
 ]
 test_requires = requires + []
 
-setup(name='openprocurement.auctions.sspinsider',
+setup(name='openprocurement.auctions.tessel',
       version=version,
       description="",
       long_description=open("README.rst").read() + "\n" +
@@ -41,7 +41,7 @@ setup(name='openprocurement.auctions.sspinsider',
       author='Quintagroup, Ltd.',
       author_email='info@quintagroup.com',
       license='Apache License 2.0',
-      url='https://github.com/openprocurement/openprocurement.auctions.sspinsider',
+      url='https://github.com/openprocurement/openprocurement.auctions.tessel',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['openprocurement', 'openprocurement.auctions'],
       include_package_data=True,

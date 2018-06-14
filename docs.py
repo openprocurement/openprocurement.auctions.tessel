@@ -10,8 +10,8 @@ from webtest import TestApp
 from openprocurement.auctions.core.tests.base import PrefixedRequestClass, base_test_bids
 from openprocurement.auctions.core.utils import get_now
 
-import openprocurement.auctions.sspinsider.tests.base as base_test
-from openprocurement.auctions.sspinsider.tests.base import (
+import openprocurement.auctions.tessel.tests.base as base_test
+from openprocurement.auctions.tessel.tests.base import (
     test_insider_auction_data as base_test_auction_data,
     BaseInsiderAuctionWebTest
 )

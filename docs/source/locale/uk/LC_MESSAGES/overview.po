@@ -45,10 +45,10 @@ msgstr "Статус цього проекту пре-альфа."
 
 msgid ""
 "The source repository for this project is on GitHub: "
-"`<https://github.com/openprocurement/openprocurement.auctions.sspinsider>`_"
+"`<https://github.com/openprocurement/openprocurement.auctions.tessel>`_"
 msgstr ""
 "Репозиторій джерельних текстів цього проекту є на `GitHub "
-"<https://github.com/openprocurement/openprocurement.auctions.sspinsider>`_."
+"<https://github.com/openprocurement/openprocurement.auctions.tessel>`_."
 
 msgid "Documentation of related packages"
 msgstr "Документація пов’язаних пакетів"
@@ -74,10 +74,10 @@ msgid "Next steps"
 msgstr "Наступні кроки"
 
 msgid ""
-"openprocurement.auctions.sspinsider contains documentaion for Deposit Guarantee "
+"openprocurement.auctions.tessel contains documentaion for Deposit Guarantee "
 "Fund auctions."
 msgstr ""
-"openprocurement.auctions.sspinsider містить документацію по аукціонах Фонду "
+"openprocurement.auctions.tessel містить документацію по аукціонах Фонду "
 "гарантування вкладів."
 
 msgid "Features"
@@ -193,9 +193,9 @@ msgid "The `minimalStep` field is optional (value that will be always automatica
 msgstr "Поле `minimalStep` є необов’язковим (значення, яке завжди буде автоматично встановлено, "
 "становить 0)."
 
-msgid "openprocurement.auctions.sspinsider contains documentaion concerning the new type "
+msgid "openprocurement.auctions.tessel contains documentaion concerning the new type "
 "of the Deposit Guarantee Fund auctions."
-msgstr "openprocurement.auctions.sspinsider містить документацію по новому типу аукціону "
+msgstr "openprocurement.auctions.tessel містить документацію по новому типу аукціону "
 "Фонду гарантування вкладів"
 
 

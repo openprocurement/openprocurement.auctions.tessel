@@ -10,7 +10,7 @@ Content-Type: application/json; charset=UTF-8
   "data": {
     "procurementMethod": "open", 
     "auctionID": "UA-EA-2018-03-13-000001", 
-    "auctionUrl": "http://auction-sandbox.openprocurement.org/sspinsider-auctions/ca31727f31f243b089cbc005b8fda5ba",
+    "auctionUrl": "http://auction-sandbox.openprocurement.org/tessel-auctions/ca31727f31f243b089cbc005b8fda5ba",
     "enquiryPeriod": {
       "startDate": "2018-02-21T17:48:55.444253+02:00", 
       "endDate": "2018-03-13T17:48:55.444253+02:00"

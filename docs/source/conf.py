@@ -50,7 +50,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'openprocurement.auctions.sspinsider'
+project = u'openprocurement.auctions.tessel'
 copyright = u'2016, Quintagroup, Ltd'
 
 # The version info for the project you're documenting, acts as replacement for
