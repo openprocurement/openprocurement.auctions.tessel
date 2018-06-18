@@ -154,8 +154,8 @@ class TesselAuction(BaseAuction):
     registrationFee = ModelType(Guarantee)
     bankAccount = ModelType(BankAccount)
 
-    # create_accreditation = 3
-    # edit_accreditation = 4
+    create_accreditation = 3
+    edit_accreditation = 4
 
     def __acl__(self):
         return [
