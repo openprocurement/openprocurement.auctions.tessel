@@ -14,10 +14,10 @@ from openprocurement.auctions.core.validation import (
 from openprocurement.auctions.core.views.mixins import AuctionLotResource
 
 
-@opresource(name='dgfInsider:Auction Lots',
+@opresource(name='tessel:Auction Lots',
             collection_path='/auctions/{auction_id}/lots',
             path='/auctions/{auction_id}/lots/{lot_id}',
-            auctionsprocurementMethodType="dgfInsider",
+            auctionsprocurementMethodType="tessel",
             description="Tessel auction lots")
 class InsiderAuctionLotResource(AuctionLotResource):
 

@@ -17,10 +17,10 @@ from openprocurement.auctions.core.validation import (
 from openprocurement.auctions.core.views.mixins import AuctionDocumentResource
 
 
-@opresource(name='dgfInsider:Auction Documents',
+@opresource(name='tessel:Auction Documents',
             collection_path='/auctions/{auction_id}/documents',
             path='/auctions/{auction_id}/documents/{document_id}',
-            auctionsprocurementMethodType="dgfInsider",
+            auctionsprocurementMethodType="tessel",
             description="Tessel auction related binary files (PDFs, etc.)")
 class InsiderAuctionDocumentResource(AuctionDocumentResource):
 

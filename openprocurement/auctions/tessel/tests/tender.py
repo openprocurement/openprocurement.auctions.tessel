@@ -20,7 +20,7 @@ from openprocurement.auctions.core.tests.blanks.tender_blanks import (
 
 from openprocurement.auctions.core.constants import DGF_ELIGIBILITY_CRITERIA
 
-from openprocurement.auctions.tessel.models import DGFInsider
+from openprocurement.auctions.tessel.models import TesselAuction
 from openprocurement.auctions.tessel.tests.base import (
     test_insider_auction_data,
     test_organization,
@@ -45,7 +45,7 @@ from openprocurement.auctions.tessel.tests.blanks.tender_blanks import (
 
 
 class InsiderAuctionTest(BaseInsiderWebTest):
-    auction = DGFInsider
+    auction = TesselAuction
     initial_data = test_insider_auction_data
 
     test_simple_add_auction = snitch(simple_add_auction)
@@ -69,6 +69,7 @@ class InsiderAuctionResourceTest(BaseInsiderWebTest, AuctionResourceTestMixin, D
 
 class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
     test_financial_organization = test_organization
+    docservice = True
 
     #setUp = BaseInsiderWebTest.setUp
     def setUp(self):
@@ -86,59 +87,57 @@ class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
         self.assertEqual(response.json['errors'], [
             {
                 "location": "body", "name": "auctionParameters", "description": {
-                    "type": ["Value must be one of ['tessel']."],
-                    "dutchSteps": ["Value must be one of [10, 20, 30, 40, 50, 60, 70, 80, 90, 99, 100]."]
+                    "type": ["Value must be one of ['english', 'insider']."]
                 }
             }
         ])
 
-        data['auctionParameters'] = {'dutchSteps': 112, 'type': 'tessel'}
+        data['auctionParameters'] = {'dutchSteps': 112, 'type': 'insider'}
         response = self.app.post_json('/auctions', {'data': data}, status=422)
         self.assertEqual(response.status, '422 Unprocessable Entity')
         self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.json['errors'], [
             {
                 "location": "body", "name": "auctionParameters", "description": {
-                    "dutchSteps": ["Value must be one of [10, 20, 30, 40, 50, 60, 70, 80, 90, 99, 100]."]
+                    "dutchSteps": ["Int value should be less than 99."]
                 }
             }
         ])
 
-        # Create auction with default auctionParameters values
-        del data['auctionParameters']
+        # Create auction with auctionParameters values
+        data = deepcopy(self.initial_data)
         response = self.app.post_json('/auctions', {'data': data})
         self.assertEqual(response.status, '201 Created')
         self.assertEqual(response.content_type, 'application/json')
-        self.assertEqual(response.json['data']['auctionParameters']['dutchSteps'], 80)
-        self.assertEqual(response.json['data']['auctionParameters']['type'], 'tessel')
-
-        data['auctionParameters'] = {'dutchSteps': 70, 'type': 'tessel'}
-        response = self.app.post_json('/auctions', {'data': data})
-        self.assertEqual(response.status, '201 Created')
-        self.assertEqual(response.content_type, 'application/json')
-        self.assertEqual(response.json['data']['auctionParameters']['dutchSteps'], 70)
-        self.assertEqual(response.json['data']['auctionParameters']['type'], 'tessel')
+        self.assertEqual(
+            response.json['data']['auctionParameters']['dutchSteps'],
+            data['auctionParameters']['dutchSteps']
+        )
+        self.assertEqual(response.json['data']['auctionParameters']['type'], 'insider')
         auction_id = self.auction_id = response.json['data']['id']
         owner_token = response.json['access']['token']
 
 
         #  Patch auctionParameters (Not allowed)
         response = self.app.patch_json('/auctions/{}?acc_token={}'.format(auction_id, owner_token), {
-            'data': {'auctionParameters': {'dutchSteps': 50, 'type': 'tessel'}}
+            'data': {'auctionParameters': {'dutchSteps': 50, 'type': 'english'}}
         })
         self.assertEqual(response.status, '200 OK')
         self.assertEqual(response.content_type, 'application/json')
-        self.assertEqual(response.json['data']['auctionParameters']['dutchSteps'], 70)
-        self.assertEqual(response.json['data']['auctionParameters']['type'], 'tessel')
+        self.assertEqual(
+            response.json['data']['auctionParameters']['dutchSteps'],
+            data['auctionParameters']['dutchSteps']
+        )
+        self.assertEqual(response.json['data']['auctionParameters']['type'], 'insider')
 
         self.app.authorization = ('Basic', ('administrator', ''))
         response = self.app.patch_json('/auctions/{}'.format(auction_id), {
-            'data': {'auctionParameters': {'dutchSteps': 99, 'type': 'tessel'}}
+            'data': {'auctionParameters': {'dutchSteps': 99, 'type': 'insider'}}
         })
         self.assertEqual(response.status, '200 OK')
         self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.json['data']['auctionParameters']['dutchSteps'], 99)
-        self.assertEqual(response.json['data']['auctionParameters']['type'], 'tessel')
+        self.assertEqual(response.json['data']['auctionParameters']['type'], 'insider')
 
     test_one_valid_bid_auction = unittest.skip('option not available')(snitch(one_valid_bid_auction))
     test_one_invalid_bid_auction = unittest.skip('option not available')(snitch(one_invalid_bid_auction))
@@ -150,24 +149,24 @@ class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
 class InsiderAuctionSchemaResourceTest(InsiderAuctionResourceTest):
     initial_data = test_insider_auction_data_with_schema
 
-    def test_create_auction_with_bad_schemas_code(self):
-        response = self.app.get('/auctions')
-        self.assertEqual(response.status, '200 OK')
-        self.assertEqual(len(response.json['data']), 0)
-        bad_initial_data = deepcopy(self.initial_data)
-        bad_initial_data['items'][0]['classification']['id'] = "42124210-6"
-        response = self.app.post_json('/auctions', {"data": bad_initial_data},
-                                      status=422)
-        self.assertEqual(response.status, '422 Unprocessable Entity')
-        self.assertEqual(response.content_type, 'application/json')
-        self.assertEqual(response.json['errors'],
-                         [{
-                             "location": "body",
-                             "name": "items",
-                             "description": [{
-                                 "schema_properties": ["classification id mismatch with schema_properties code"]
-                             }]
-                         }])
+    # def test_create_auction_with_bad_schemas_code(self):
+    #     response = self.app.get('/auctions')
+    #     self.assertEqual(response.status, '200 OK')
+    #     self.assertEqual(len(response.json['data']), 0)
+    #     bad_initial_data = deepcopy(self.initial_data)
+    #     bad_initial_data['items'][0]['classification']['id'] = "42124210-6"
+    #     response = self.app.post_json('/auctions', {"data": bad_initial_data},
+    #                                   status=422)
+    #     self.assertEqual(response.status, '422 Unprocessable Entity')
+    #     self.assertEqual(response.content_type, 'application/json')
+    #     self.assertEqual(response.json['errors'],
+    #                      [{
+    #                          "location": "body",
+    #                          "name": "items",
+    #                          "description": [{
+    #                              "schema_properties": ["classification id mismatch with schema_properties code"]
+    #                          }]
+    #                      }])
 
 
 

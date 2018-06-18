@@ -4,9 +4,6 @@ from uuid import uuid4
 from openprocurement.api.utils import get_now
 
 from openprocurement.auctions.core.tests.base import snitch
-from openprocurement.auctions.core.plugins.awarding.v3.tests.migration import (
-    MigrateAwardingV2toV3Mixin
-)
 from openprocurement.auctions.tessel.tests.base import (
     test_bids as test_bids
 )
@@ -22,9 +19,10 @@ from openprocurement.auctions.tessel.tests.blanks.migration_blanks import (
 )
 
 
-class MigrateTestFrom2To3WithTwoBids(BaseInsiderAuctionWebTest, MigrateAwardingV2toV3Mixin):
+class MigrateTestFrom2To3WithTwoBids(BaseInsiderAuctionWebTest):
     initial_status = 'active.qualification'
     initial_bids = test_bids
+    docservice = True
 
     @staticmethod
     def migrate_data(registry, destination=None):
@@ -46,6 +44,7 @@ class MigrateTestFrom2To3WithTwoBids(BaseInsiderAuctionWebTest, MigrateAwardingV
 class MigrateTestFrom2To3Schema(BaseInsiderAuctionWebTest):
     initial_status = 'active.awarded'
     initial_bids = test_bids
+    docservice = True
 
     def test_migrate_one_pending_contract(self):
         auction = self.db.get(self.auction_id)
@@ -97,6 +96,30 @@ class MigrateTestFrom2To3Schema(BaseInsiderAuctionWebTest):
         self.assertEqual(response.status, '201 Created')
         self.assertEqual(response.content_type, 'application/json')
 
+        # Upload document
+        response = self.app.post_json(
+            '/auctions/{}/contracts/{}/documents'.format(self.auction_id, auction['contracts'][0]['id']),
+            params={
+                'data': {
+                    'documentType': 'contractSigned',
+                    'title': 'Signed contract',
+                    'format': 'application/msword',
+                    'url': self.generate_docservice_url(),
+                    'hash': 'md5:' + '0' * 32
+                }
+            })
+        self.assertEqual(response.status, '201 Created')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(response.json['data']['title'], 'Signed contract')
+        self.assertEqual(response.json['data']['documentType'], 'contractSigned')
+
+        # Patch dateSigned field
+        signature_date = get_now().isoformat()
+        response = self.app.patch_json('/auctions/{}/contracts/{}'.format(
+            self.auction_id, auction['contracts'][0]['id']
+        ), {"data": {"dateSigned": signature_date}})
+        self.assertEqual(response.status, '200 OK')
+
         response = self.app.patch_json('/auctions/{}/contracts/{}'.format(self.auction_id, auction['contracts'][0]['id']),
                                        {"data": {"status": "active"}})
         self.assertEqual(response.status, '200 OK')
@@ -107,6 +130,7 @@ class MigrateTestFrom2To3Schema(BaseInsiderAuctionWebTest):
         self.assertEqual(response.status, '200 OK')
         self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.json['data']['status'], u'complete')
+
 
 def suite():
     suite = unittest.TestSuite()

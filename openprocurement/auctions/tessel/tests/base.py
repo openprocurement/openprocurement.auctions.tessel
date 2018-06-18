@@ -7,7 +7,7 @@ from openprocurement.auctions.core.tests.base import (
     BaseWebTest,
     BaseAuctionWebTest,
     test_organization as base_test_organization,
-    test_auction_data, base_test_bids
+    test_auction_data, base_test_bids, test_document_data
 )
 from openprocurement.auctions.core.utils import apply_data_patch
 
@@ -15,7 +15,45 @@ from openprocurement.auctions.core.utils import apply_data_patch
 from openprocurement.auctions.tessel.constants import DEFAULT_PROCUREMENT_METHOD_TYPE
 
 now = datetime.now()
+
 test_insider_auction_data = deepcopy(test_auction_data)
+for item in test_insider_auction_data['items']:
+    item['classification']['scheme'] = 'CPV'
+    item['classification']['id'] = '51413000-0'
+
+test_insider_auction_data['auctionParameters'] = {
+    'type': 'insider',
+    'dutchSteps': 88
+}
+test_insider_auction_data.update({
+    'registrationFee': {
+        'amount': 700.87,
+        'currency': 'UAH'
+    },
+    'bankAccount': {
+        'bankName': 'name of bank',
+        'accountIdentification': [
+            {
+                'scheme': 'accountNumber',
+                'id': '111111-8',
+                'description': 'some description'
+            }
+        ]
+    }
+})
+
+tessel_document_data = deepcopy(test_document_data)
+tessel_document_data['documentType'] = 'x_dgfAssetFamiliarization'
+del tessel_document_data['hash']
+tessel_document_data['accessDetails'] = 'access details'
+
+test_insider_auction_data['documents'] = [
+    tessel_document_data
+]
+
+del test_insider_auction_data['dgfID']
+del test_insider_auction_data['dgfDecisionDate']
+del test_insider_auction_data['dgfDecisionID']
 
 schema_properties = {
     "code": "06000000-2",
@@ -33,8 +71,8 @@ schema_properties = {
  }
 
 test_insider_auction_data_with_schema = deepcopy(test_insider_auction_data)
-test_insider_auction_data_with_schema['items'][0]['classification']['id'] = schema_properties['code']
-test_insider_auction_data_with_schema['items'][0]['schema_properties'] = schema_properties
+# test_insider_auction_data_with_schema['items'][0]['classification']['id'] = schema_properties['code']
+# test_insider_auction_data_with_schema['items'][0]['schema_properties'] = schema_properties
 
 test_organization = deepcopy(base_test_organization)
 test_organization['additionalIdentifiers'] = [{

@@ -8,10 +8,10 @@ from openprocurement.auctions.core.views.mixins import AuctionBidDocumentResourc
 from openprocurement.auctions.tessel.constants import TENDER_PERIOD_STATUSES
 
 
-@opresource(name='dgfInsider:Auction Bid Documents',
+@opresource(name='tessel:Auction Bid Documents',
             collection_path='/auctions/{auction_id}/bids/{bid_id}/documents',
             path='/auctions/{auction_id}/bids/{bid_id}/documents/{document_id}',
-            auctionsprocurementMethodType="dgfInsider",
+            auctionsprocurementMethodType="tessel",
             description="Tessel auction bidder documents")
 class InsiderAuctionBidDocumentResource(AuctionBidDocumentResource):
 

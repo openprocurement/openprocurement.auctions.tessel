@@ -14,11 +14,11 @@ from openprocurement.auctions.core.validation import (
 from openprocurement.auctions.core.views.mixins import AuctionQuestionResource
 
 
-@opresource(name='dgfInsider:Auction Questions',
+@opresource(name='tessel:Auction Questions',
             collection_path='/auctions/{auction_id}/questions',
             path='/auctions/{auction_id}/questions/{question_id}',
-            auctionsprocurementMethodType="dgfInsider",
-            description="dgfInsider:Auction questions")
+            auctionsprocurementMethodType="tessel",
+            description="tessel:Auction questions")
 class InsiderAuctionQuestionResource(AuctionQuestionResource):
 
     @json_view(content_type="application/json", validators=(validate_question_data,), permission='create_question')

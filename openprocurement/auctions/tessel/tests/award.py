@@ -6,11 +6,12 @@ from datetime import timedelta
 from openprocurement.auctions.core.tests.award import (
     AuctionAwardDocumentResourceTestMixin
 )
-from openprocurement.auctions.core.plugins.awarding.v3.tests.award import (
+from openprocurement.auctions.core.tests.plugins.awarding.v3_1.tests.award import (
     AuctionAwardProcessTestMixin,
     CreateAuctionAwardTestMixin
+
 )
-from openprocurement.auctions.core.utils import get_now
+from openprocurement.auctions.core.utils import get_now, get_related_contract_of_award
 
 from openprocurement.auctions.tessel.tests.base import (
     BaseInsiderAuctionWebTest,
@@ -28,6 +29,82 @@ class InsiderAuctionAwardProcessTest(BaseInsiderAuctionWebTest, AuctionAwardProc
     initial_status = 'active.auction'
     initial_bids = test_bids
     docservice = True
+
+    def upload_rejection_protocol(self, award):
+        owner_token = self.auction_token
+        award_id = award['id']
+
+        response = self.app.post(
+            '/auctions/{}/awards/{}/documents?acc_token={}'.format(
+                self.auction_id, award_id, owner_token
+            ), upload_files=[('file', 'rejection_protocol.pdf', 'content')])
+        self.assertEqual(response.status, '201 Created')
+        self.assertEqual(response.content_type, 'application/json')
+        doc_id = response.json["data"]['id']
+        self.assertIn(doc_id, response.headers['Location'])
+        self.assertEqual(
+            'rejection_protocol.pdf', response.json["data"]["title"]
+        )
+
+        response = self.app.patch_json(
+            '/auctions/{}/awards/{}/documents/{}?acc_token={}'.format(
+                self.auction_id, award_id, doc_id, owner_token
+            ),
+            {"data": {
+                "description": "rejection protocol",
+                "documentType": 'rejectionProtocol'
+            }})
+
+        self.assertEqual(response.status, '200 OK')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(doc_id, response.json["data"]["id"])
+        self.assertIn("documentType", response.json["data"])
+        self.assertEqual(
+            response.json["data"]["documentType"], 'rejectionProtocol'
+        )
+
+    def set_award_unsuccessful(self, award):
+        response = self.app.get(
+            '/auctions/{}/contracts'.format(self.auction_id)
+        )
+
+        contract = get_related_contract_of_award(
+            award['id'], {'contracts': response.json['data']}
+        )
+
+        response = self.app.post(
+            '/auctions/{}/contracts/{}/documents?acc_token={}'.format(
+                self.auction_id, contract['id'], self.auction_token
+            ), upload_files=[('file', 'rejection_protocol.pdf', 'content')])
+        self.assertEqual(response.status, '201 Created')
+        self.assertEqual(response.content_type, 'application/json')
+        doc_id = response.json['data']['id']
+
+        response = self.app.patch_json(
+            '/auctions/{}/contracts/{}/documents/{}?acc_token={}'.format(
+                self.auction_id, contract['id'], doc_id, self.auction_token
+            ),
+            {"data": {
+                "description": "rejection protocol",
+                "documentType": 'rejectionProtocol'
+            }})
+        self.assertEqual(response.status, '200 OK')
+        self.assertEqual(response.content_type, 'application/json')
+
+        response = self.app.patch_json(
+            '/auctions/{}/contracts/{}?acc_token={}'.format(
+                self.auction_id, contract['id'], self.auction_token
+            ), {'data': {'status': 'cancelled'}})
+        self.assertEqual(response.status, '200 OK')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(response.json['data']['status'], 'cancelled')
+
+        response = self.app.get('/auctions/{}/awards/{}'.format(
+            self.auction_id, award['id']
+        ))
+        self.assertEqual(response.status, '200 OK')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(response.json['data']['status'], 'unsuccessful')
 
     def upload_auction_protocol(self, award):
         award_id = award['id']

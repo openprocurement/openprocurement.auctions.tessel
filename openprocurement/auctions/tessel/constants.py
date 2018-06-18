@@ -18,4 +18,9 @@ VIEW_LOCATIONS = [
     "openprocurement.auctions.tessel.views",
 ]
 
-DEFAULT_PROCUREMENT_METHOD_TYPE = "DGFInsider"
+DEFAULT_PROCUREMENT_METHOD_TYPE = "sellout.insider"
+
+AUCTION_STATUSES = [
+    'draft', 'pending.activation', 'active.tendering', 'active.auction', 'active.qualification',
+    'active.awarded', 'complete', 'cancelled', 'unsuccessful'
+]

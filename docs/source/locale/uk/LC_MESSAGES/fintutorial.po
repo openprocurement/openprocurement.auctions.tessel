@@ -172,7 +172,7 @@ msgstr ""
 "Учасник може зареєструвати пропозицію у статусі `draft` (чернетка). Учасник "
 "повинен вказати значення ``UA-FIN`` для параметра `additionalIdentifiers`."
 
-msgid "Tutorial for the `dgfInsider` procedure."
+msgid "Tutorial for the `tessel` procedure."
 msgstr ""
 
 msgid ""

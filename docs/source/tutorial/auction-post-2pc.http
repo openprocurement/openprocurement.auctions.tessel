@@ -12,7 +12,7 @@ Host: api-sandbox.ea.openprocurement.org
       "startDate": "2018-03-27"
     }, 
     "tenderAttempts": 1, 
-    "procurementMethodType": "dgfInsider", 
+    "procurementMethodType": "tessel",
     "value": {
       "currency": "UAH", 
       "amount": 100
@@ -110,7 +110,7 @@ Location: http://api-sandbox.ea.openprocurement.org/api/2.3/auctions/6c115143080
       "endDate": "2018-03-27T00:00:30.631944+03:00"
     }, 
     "procurementMethodDetails": "quick, accelerator=1440", 
-    "procurementMethodType": "dgfInsider", 
+    "procurementMethodType": "tessel",
     "dgfID": "219560", 
     "date": "2018-03-13T17:48:58.007083+02:00", 
     "minimalStep": {

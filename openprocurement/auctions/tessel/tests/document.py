@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from openprocurement.auctions.core.constants import DGF_PLATFORM_LEGAL_DETAILS_FROM
 from openprocurement.auctions.tessel.tests.base import BaseInsiderAuctionWebTest
 from openprocurement.auctions.core.tests.base import snitch
 from openprocurement.auctions.core.tests.document import (
@@ -13,11 +12,14 @@ from openprocurement.auctions.core.tests.blanks.document_blanks import (
     create_auction_document_vdr,
     put_auction_document_vdr,
 )
+from openprocurement.auctions.tessel.tests.blanks.document_blanks import (
+    patch_auction_document
+)
 
 
 class InsiderAuctionDocumentResourceTest(BaseInsiderAuctionWebTest, AuctionDocumentResourceTestMixin):
     docservice = False
-    dgf_platform_legal_details_from = DGF_PLATFORM_LEGAL_DETAILS_FROM
+    test_patch_auction_document = snitch(patch_auction_document)
 
 
 class InsiderAuctionDocumentWithDSResourceTest(InsiderAuctionDocumentResourceTest, AuctionDocumentWithDSResourceTestMixin):
@@ -25,6 +27,7 @@ class InsiderAuctionDocumentWithDSResourceTest(InsiderAuctionDocumentResourceTes
 
     test_create_auction_document_vdr = snitch(create_auction_document_vdr)
     test_put_auction_document_vdr = snitch(put_auction_document_vdr)
+    test_patch_auction_document = snitch(patch_auction_document)
 
 
 def suite():

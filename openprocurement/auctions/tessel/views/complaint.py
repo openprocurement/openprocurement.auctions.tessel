@@ -16,10 +16,10 @@ from openprocurement.auctions.core.validation import (
 from openprocurement.auctions.core.views.mixins import AuctionComplaintResource
 
 
-@opresource(name='dgfInsider:Auction Complaints',
+@opresource(name='tessel:Auction Complaints',
             collection_path='/auctions/{auction_id}/complaints',
             path='/auctions/{auction_id}/complaints/{complaint_id}',
-            auctionsprocurementMethodType="dgfInsider",
+            auctionsprocurementMethodType="tessel",
             description="Tessel auction complaints")
 class InsiderAuctionComplaintResource(AuctionComplaintResource):
 

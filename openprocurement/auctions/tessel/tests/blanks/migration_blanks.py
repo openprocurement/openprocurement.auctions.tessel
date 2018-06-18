@@ -1,6 +1,27 @@
-from openprocurement.auctions.core.plugins.awarding.v2.tests.award import (
-    award_fixture
-)
+# -*- coding: utf-8 -*-
+from uuid import uuid4
+from openprocurement.auctions.core.utils import get_now
+
+def award_fixture(auction, status, bid_index):
+    now = get_now()
+    return {
+        "id": uuid4().hex,
+        "date": now.isoformat(),
+        "bid_id": auction["bids"][bid_index]["id"],
+        "status": status,
+        "suppliers": auction["bids"][bid_index]["tenderers"],
+        'value': auction['value'],
+        "complaintPeriod": {
+            "startDate": now.isoformat(),
+        },
+        "signingPeriod": {
+            "startDate": now.isoformat(),
+            "endDate": now.isoformat(),
+        },
+        "verificationPeriod": {
+            "startDate": now.isoformat()
+        }
+    }
 
 
 def migrate_pendingVerification_pending_one_bid(self):

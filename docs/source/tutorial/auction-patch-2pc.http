@@ -55,7 +55,7 @@ Content-Type: application/json; charset=UTF-8
     "auctionPeriod": {
       "shouldStartAfter": "2018-03-27T00:00:00+03:00"
     }, 
-    "procurementMethodType": "dgfInsider", 
+    "procurementMethodType": "tessel",
     "dgfID": "219560", 
     "date": "2018-03-13T17:48:58.053203+02:00", 
     "minimalStep": {

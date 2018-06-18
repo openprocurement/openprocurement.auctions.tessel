@@ -3,7 +3,7 @@ Overview
 
 openprocurement.auctions.tessel contains documentaion concerning the new type of the Deposit Guarantee Fund auctions.
 
-The procedure to be used is **dgfInsider** which states for the insolvent bank property and the creditor claim right.
+The procedure to be used is **tessel** which states for the insolvent bank property and the creditor claim right.
 
 
 Features

@@ -15,9 +15,9 @@ from openprocurement.auctions.core.views.mixins import AuctionResource
 from openprocurement.auctions.tessel.utils import check_status
 
 
-@opresource(name='dgfInsider:Auction',
+@opresource(name='tessel:Auction',
             path='/auctions/{auction_id}',
-            auctionsprocurementMethodType="dgfInsider",
+            auctionsprocurementMethodType="tessel",
             description="Open Contracting compatible data exchange format. See http://ocds.open-contracting.org/standard/r/master/#auction for more info")
 class InsiderAuctionResource(AuctionResource):
 

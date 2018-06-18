@@ -13,21 +13,14 @@ from schematics.transforms import blacklist, whitelist
 from schematics.types.serializable import serializable
 from zope.interface import implementer
 
-from openprocurement.auctions.core.constants import (
-    DGF_ELIGIBILITY_CRITERIA,
-    DGF_PLATFORM_LEGAL_DETAILS,
-    DGF_PLATFORM_LEGAL_DETAILS_FROM,
-    DGF_ID_REQUIRED_FROM,
-    DGF_DECISION_REQUIRED_FROM,
-)
 from openprocurement.auctions.core.models import (
     Auction as BaseAuction,
-    dgfItem as Item,
-    dgfDocument as Document,
+    SwiftsureItem as Item,
+    swiftsureDocument as Document,
     dgfComplaint as Complaint,
     dgfCancellation as Cancellation,
-    AuctionParameters as BaseAuctionParameters,
-    dgf_auction_roles,
+    AuctionParameters,
+    tessel_auction_roles,
     ComplaintModelType,
     Model,
     ListType,
@@ -38,15 +31,17 @@ from openprocurement.auctions.core.models import (
     Bid as BaseBid,
     Feature,
     Lot,
+    Guarantee,
+    BankAccount,
     validate_features_uniq,
     validate_lots_uniq,
     validate_items_uniq,
     validate_not_available
 )
-from openprocurement.auctions.core.plugins.awarding.v3.models import (
+from openprocurement.auctions.core.plugins.awarding.v3_1.models import (
     Award
 )
-from openprocurement.auctions.core.plugins.contracting.v3.models import (
+from openprocurement.auctions.core.plugins.contracting.v3_1.models import (
     Contract,
 )
 from openprocurement.auctions.core.utils import (
@@ -61,9 +56,17 @@ from openprocurement.auctions.core.utils import (
 from openprocurement.auctions.tessel.constants import (
     DUTCH_PERIOD,
     QUICK_DUTCH_PERIOD,
-    NUMBER_OF_STAGES
+    NUMBER_OF_STAGES,
+    AUCTION_STATUSES
 )
 from openprocurement.auctions.tessel.utils import generate_auction_url, calc_auction_end_time
+
+
+class TesselAuctionParameters(AuctionParameters):
+    class Options:
+        roles = {
+            'create': blacklist()
+        }
 
 
 class AuctionAuctionPeriod(Period):
@@ -119,27 +122,17 @@ class Bid(BaseBid):
             return url
 
 
-class AuctionParameters(BaseAuctionParameters):
-    class Options:
-        roles = {
-            'create': whitelist('type', 'dutchSteps'),
-        }
-
-    type = StringType(choices=['tessel'], default='tessel')
-    dutchSteps = IntType(choices=[10, 20, 30, 40, 50, 60, 70, 80, 90, 99, 100], default=80)
-
-
 @implementer(IAuction)
-class IInsiderAuction(IAuction):
+class ITesselAuction(IAuction):
     """Marker interface for Tessel auctions"""
 
 
-@implementer(IInsiderAuction)
-class DGFInsider(BaseAuction):
+@implementer(ITesselAuction)
+class TesselAuction(BaseAuction):
     """Data regarding auction process - publicly inviting prospective contractors to submit bids for evaluation and selecting a winner or winners."""
     class Options:
-        roles = dgf_auction_roles
-    _procedure_type = "dgfInsider"
+        roles = tessel_auction_roles
+    _procedure_type = "tessel"
     awards = ListType(ModelType(Award), default=list())
     cancellations = ListType(ModelType(Cancellation), default=list())
     complaints = ListType(ComplaintModelType(Complaint), default=list())
@@ -148,7 +141,7 @@ class DGFInsider(BaseAuction):
     enquiryPeriod = ModelType(Period)  # The period during which enquiries may be made and will be answered.
     tenderPeriod = ModelType(Period)  # The period when the auction is open for submissions. The end date is the closing date for auction submissions.
     tenderAttempts = IntType(choices=[1, 2, 3, 4, 5, 6, 7, 8])
-    status = StringType(choices=['draft', 'active.tendering', 'active.auction', 'active.qualification', 'active.awarded', 'complete', 'cancelled', 'unsuccessful'], default='active.tendering')
+    status = StringType(choices=AUCTION_STATUSES, default='active.tendering')
     features = ListType(ModelType(Feature), validators=[validate_features_uniq, validate_not_available])
     lots = ListType(ModelType(Lot), default=list(), validators=[validate_lots_uniq, validate_not_available])
     items = ListType(ModelType(Item), required=True, min_size=1, validators=[validate_items_uniq])
@@ -156,12 +149,13 @@ class DGFInsider(BaseAuction):
     merchandisingObject = MD5Type()
     bids = ListType(ModelType(Bid), default=list())  # A list of all the companies who entered submissions for the auction.
     auctionPeriod = ModelType(AuctionAuctionPeriod, required=True, default={})
-    auctionParameters = ModelType(AuctionParameters)
+    auctionParameters = ModelType(TesselAuctionParameters)
     minimalStep = ModelType(Value)
+    registrationFee = ModelType(Guarantee)
+    bankAccount = ModelType(BankAccount)
 
-    eligibilityCriteria = StringType(default=DGF_ELIGIBILITY_CRITERIA['ua'])
-    eligibilityCriteria_en = StringType(default=DGF_ELIGIBILITY_CRITERIA['en'])
-    eligibilityCriteria_ru = StringType(default=DGF_ELIGIBILITY_CRITERIA['ru'])
+    # create_accreditation = 3
+    # edit_accreditation = 4
 
     def __acl__(self):
         return [
@@ -189,14 +183,8 @@ class DGFInsider(BaseAuction):
         self.auctionPeriod.startDate = None
         self.auctionPeriod.endDate = None
         self.date = now
-        self.documents.append(type(self).documents.model_class(DGF_PLATFORM_LEGAL_DETAILS))
         if not self.auctionParameters:
             self.auctionParameters = type(self).auctionParameters.model_class()
-
-    def validate_documents(self, data, docs):
-        if (data.get('revisions')[0].date if data.get('revisions') else get_now()) > DGF_PLATFORM_LEGAL_DETAILS_FROM and \
-                (docs and docs[0].documentType != 'x_dgfPlatformLegalDetails' or any([i.documentType == 'x_dgfPlatformLegalDetails' for i in docs[1:]])):
-            raise ValidationError(u"First document should be document with x_dgfPlatformLegalDetails documentType")
 
     def validate_value(self, data, value):
         if value.currency != u'UAH':

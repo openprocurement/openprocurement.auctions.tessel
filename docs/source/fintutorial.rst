@@ -3,7 +3,7 @@
 Fin. Tutorial
 =============
 
-Tutorial for the `dgfInsider` procedure.
+Tutorial for the `tessel` procedure.
 
 Creating auction
 ----------------

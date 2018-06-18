@@ -15,10 +15,10 @@ from openprocurement.auctions.tessel.validation import (
 )
 
 
-@opresource(name='dgfInsider:Auction Auction',
+@opresource(name='tessel:Auction Auction',
             collection_path='/auctions/{auction_id}/auction',
             path='/auctions/{auction_id}/auction/{auction_lot_id}',
-            auctionsprocurementMethodType="dgfInsider",
+            auctionsprocurementMethodType="tessel",
             description="Tessel auction auction data")
 class InsiderAuctionAuctionResource(AuctionAuctionResource):
 

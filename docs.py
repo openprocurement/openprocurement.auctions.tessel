@@ -21,7 +21,7 @@ now = datetime.now()
 
 test_auction_data = base_test_auction_data.copy()
 
-test_auction_data["procurementMethodType"] = "dgfInsider"
+test_auction_data["procurementMethodType"] = "tessel"
 
 test_bids = []
 for i in base_test_bids:

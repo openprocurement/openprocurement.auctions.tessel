@@ -140,7 +140,7 @@ Content-Type: application/json; charset=UTF-8
       "startDate": "2018-03-13T17:48:55.444253+02:00", 
       "shouldStartAfter": "2018-03-14T00:00:00+02:00"
     }, 
-    "procurementMethodType": "dgfInsider", 
+    "procurementMethodType": "tessel",
     "dgfID": "219560", 
     "date": "2018-03-13T17:49:02.901426+02:00", 
     "minimalStep": {
