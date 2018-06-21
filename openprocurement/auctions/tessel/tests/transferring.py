@@ -2,8 +2,11 @@
 import unittest
 
 from openprocurement.auctions.tessel.tests.base import BaseInsiderAuctionWebTest
+from openprocurement.auctions.core.tests.base import snitch
 from openprocurement.auctions.core.tests.plugins.transferring.mixins import AuctionOwnershipChangeTestCaseMixin
-
+from openprocurement.auctions.core.tests.plugins.transferring.blanks.resource_blanks import (
+    create_auction_by_concierge
+)
 
 class AuctionOwnershipChangeResourceTest(BaseInsiderAuctionWebTest,
                                          AuctionOwnershipChangeTestCaseMixin):
@@ -15,6 +18,7 @@ class AuctionOwnershipChangeResourceTest(BaseInsiderAuctionWebTest,
     initial_auth = ('Basic', (first_owner, ''))
 
     test_new_owner_can_change = None  # tessel auction can not be changed during enquiryPeriod
+    test_create_auction_by_concierge = snitch(create_auction_by_concierge)
 
 
     def setUp(self):
