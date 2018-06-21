@@ -16,9 +16,10 @@ from zope.interface import implementer
 from openprocurement.auctions.core.models import (
     Auction as BaseAuction,
     SwiftsureItem as Item,
-    swiftsureDocument as Document,
+    swiftsureDocument,
+    swiftsureBidDocument,
     dgfComplaint as Complaint,
-    dgfCancellation as Cancellation,
+    swiftsureCancellation,
     AuctionParameters,
     tessel_auction_roles,
     ComplaintModelType,
@@ -102,6 +103,7 @@ class Bid(BaseBid):
 
     status = StringType(choices=['active', 'draft', 'invalid'], default='active')
     qualified = BooleanType(required=True, choices=[True])
+    documents = ListType(ModelType(swiftsureBidDocument), default=list())
     eligible = BooleanType(required=True, choices=[True])
 
     def validate_value(self, data, value):
@@ -134,10 +136,10 @@ class TesselAuction(BaseAuction):
         roles = tessel_auction_roles
     _procedure_type = "tessel"
     awards = ListType(ModelType(Award), default=list())
-    cancellations = ListType(ModelType(Cancellation), default=list())
+    cancellations = ListType(ModelType(swiftsureCancellation), default=list())
     complaints = ListType(ComplaintModelType(Complaint), default=list())
     contracts = ListType(ModelType(Contract), default=list())
-    documents = ListType(ModelType(Document), default=list())  # All documents and attachments related to the auction.
+    documents = ListType(ModelType(swiftsureDocument), default=list())  # All documents and attachments related to the auction.
     enquiryPeriod = ModelType(Period)  # The period during which enquiries may be made and will be answered.
     tenderPeriod = ModelType(Period)  # The period when the auction is open for submissions. The end date is the closing date for auction submissions.
     tenderAttempts = IntType(choices=[1, 2, 3, 4, 5, 6, 7, 8])
@@ -165,26 +167,7 @@ class TesselAuction(BaseAuction):
         ]
 
     def initialize(self):
-        if not self.enquiryPeriod:
-            self.enquiryPeriod = type(self).enquiryPeriod.model_class()
-        if not self.tenderPeriod:
-            self.tenderPeriod = type(self).tenderPeriod.model_class()
-        now = get_now()
-        start_date = TZ.localize(self.auctionPeriod.startDate.replace(tzinfo=None))
-        self.auctionPeriod.startDate = None
-        self.auctionPeriod.endDate = None
-        self.tenderPeriod.startDate = self.enquiryPeriod.startDate = now
-        pause_between_periods = start_date - (start_date.replace(hour=20, minute=0, second=0, microsecond=0) - timedelta(days=1))
-        self.enquiryPeriod.endDate = calculate_business_date(start_date, -pause_between_periods, self).astimezone(TZ)
-        time_before_tendering_end = (start_date.replace(hour=9, minute=30, second=0, microsecond=0) + DUTCH_PERIOD) - self.enquiryPeriod.endDate
-        self.tenderPeriod.endDate = calculate_business_date(self.enquiryPeriod.endDate, time_before_tendering_end, self)
-        if SANDBOX_MODE and self.submissionMethodDetails and 'quick' in self.submissionMethodDetails:
-            self.tenderPeriod.endDate = (self.enquiryPeriod.endDate + QUICK_DUTCH_PERIOD).astimezone(TZ)
-        self.auctionPeriod.startDate = None
-        self.auctionPeriod.endDate = None
-        self.date = now
-        if not self.auctionParameters:
-            self.auctionParameters = type(self).auctionParameters.model_class()
+        pass
 
     def validate_value(self, data, value):
         if value.currency != u'UAH':
