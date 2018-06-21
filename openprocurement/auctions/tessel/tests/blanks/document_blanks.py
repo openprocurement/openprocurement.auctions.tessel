@@ -45,13 +45,13 @@ def patch_auction_document(self):
 
     response = self.app.patch_json('/auctions/{}/documents/{}'.format(self.auction_id, doc_id), {"data": {
         "description": "document description",
-        "documentType": 'auctionNotice'
+        "documentType": 'evaluationCriteria'
     }})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(doc_id, response.json["data"]["id"])
     self.assertIn("documentType", response.json["data"])
-    self.assertEqual(response.json["data"]["documentType"], 'auctionNotice')
+    self.assertEqual(response.json["data"]["documentType"], 'evaluationCriteria')
 
     response = self.app.patch_json('/auctions/{}/documents/{}'.format(self.auction_id, doc_id), {"data": {
         "documentType": None

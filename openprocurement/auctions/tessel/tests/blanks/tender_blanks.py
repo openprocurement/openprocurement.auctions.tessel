@@ -29,14 +29,12 @@ def create_role(self):
 
 
 def edit_role(self):
-    fields = set([
-        'features', 'hasEnquiries', 'description', 'description_en', 'description_ru',
-        'title', 'title_en', 'title_ru', 'tenderAttempts',
-        'merchandisingObject'
-    ])
-    if SANDBOX_MODE:
-        fields.add('procurementMethodDetails')
-    self.assertEqual(set(self.auction._fields) - self.auction._options.roles['edit_active.tendering'].fields, fields)
+    fields = set([])
+    role = self.auction._options.roles['edit_active.tendering']
+    if role.function.__name__ == 'blacklist':
+        self.assertEqual(set(self.auction._fields) - role.fields, fields)
+    else:
+        self.assertEqual(set(self.auction._fields).intersection(role.fields), fields)
 
 
 # InsiderAuctionResourceTest

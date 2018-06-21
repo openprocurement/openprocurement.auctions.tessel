@@ -497,3 +497,42 @@ def create_auction_bidder_document_nopending(self):
     self.assertEqual(response.status, '403 Forbidden')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['errors'][0]["description"], "Can't add document because award of bid is not in pending state")
+
+
+def patch_auction_bidder_document(self):
+    response = self.app.post('/auctions/{}/bids/{}/documents'.format(
+        self.auction_id, self.bid_id), upload_files=[('file', 'name.doc', 'content')])
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    doc_id = response.json["data"]['id']
+    self.assertIn(doc_id, response.headers['Location'])
+
+    response = self.app.patch_json('/auctions/{}/bids/{}/documents/{}'.format(self.auction_id, self.bid_id, doc_id), {"data": {
+        "documentOf": "lot"
+    }}, status=422)
+    self.assertEqual(response.status, '422 Unprocessable Entity')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['status'], 'error')
+    self.assertEqual(response.json['errors'], [
+        {u'description': [u'This field is required.'], u'location': u'body', u'name': u'relatedItem'},
+    ])
+
+    response = self.app.patch_json('/auctions/{}/bids/{}/documents/{}'.format(self.auction_id, self.bid_id, doc_id), {"data": {"description": "document description"}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(doc_id, response.json["data"]["id"])
+
+    response = self.app.get('/auctions/{}/bids/{}/documents/{}?acc_token={}'.format(
+        self.auction_id, self.bid_id, doc_id, self.bid_token))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(doc_id, response.json["data"]["id"])
+    self.assertEqual('document description', response.json["data"]["description"])
+
+    self.set_status('active.awarded')
+
+    response = self.app.patch_json('/auctions/{}/bids/{}/documents/{}'.format(self.auction_id, self.bid_id, doc_id), {"data": {"description": "document description"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['errors'][0]["description"], "Can't update document in current (active.awarded) auction status")
+

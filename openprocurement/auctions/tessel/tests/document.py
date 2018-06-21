@@ -29,6 +29,11 @@ class InsiderAuctionDocumentWithDSResourceTest(InsiderAuctionDocumentResourceTes
     test_put_auction_document_vdr = snitch(put_auction_document_vdr)
     test_patch_auction_document = snitch(patch_auction_document)
 
+    test_create_auction_document_pas = None
+    test_create_auction_document_vdr = None
+    test_put_auction_document_pas = None
+    test_put_auction_document_vdr = None
+
 
 def suite():
     tests = unittest.TestSuite()

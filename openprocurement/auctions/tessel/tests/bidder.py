@@ -23,6 +23,7 @@ from openprocurement.auctions.tessel.tests.blanks.bidder_blanks import (
     bid_Administrator_change,
     # InsiderAuctionBidderDocumentResourceTest
     create_auction_bidder_document_nopending,
+    patch_auction_bidder_document
 )
 
 
@@ -56,6 +57,7 @@ class InsiderAuctionBidderDocumentResourceTest(BaseInsiderAuctionWebTest,
         self.bid_token = response.json['access']['token']
 
     test_create_auction_bidder_document_nopending = snitch(create_auction_bidder_document_nopending)
+    test_patch_auction_bidder_document  = snitch(patch_auction_bidder_document)
 
 
 class InsiderAuctionBidderDocumentWithDSResourceTest(InsiderAuctionBidderDocumentResourceTest,

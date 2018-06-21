@@ -7,14 +7,48 @@ from openprocurement.auctions.core.tests.base import (
     BaseWebTest,
     BaseAuctionWebTest,
     test_organization as base_test_organization,
-    test_auction_data, base_test_bids, test_document_data
+    test_auction_data, base_test_bids, test_document_data,
+    MOCK_CONFIG as BASE_MOCK_CONFIG,
 )
-from openprocurement.auctions.core.utils import apply_data_patch
+from openprocurement.auctions.core.utils import (
+    apply_data_patch,
+    connection_mock_config
+)
 
 
 from openprocurement.auctions.tessel.constants import DEFAULT_PROCUREMENT_METHOD_TYPE
 
 now = datetime.now()
+
+PARTIAL_MOCK_CONFIG = {
+    "auctions.tessel": {
+        "use_default": True,
+        "plugins": {
+            "tessel.migration": None
+        },
+        "migration": False,
+        "aliases": []
+    }
+}
+MOCK_CONFIG_PARTIAL_AUCTION = {
+    "url": "http://auction-sandbox.openprocurement.org",
+    "public_key": "fe3b3b5999a08e68dfe62687c2ae147f62712ceace58c1ffca8ea819eabcb5d1"
+    }
+
+
+
+MOCK_CONFIG = connection_mock_config(
+    PARTIAL_MOCK_CONFIG,
+    base=BASE_MOCK_CONFIG,
+    connector=('plugins', 'api', 'plugins', 'auctions.core', 'plugins')
+)
+
+
+MOCK_CONFIG = connection_mock_config(
+    MOCK_CONFIG_PARTIAL_AUCTION,
+    base=MOCK_CONFIG,
+    connector=('config','auction')
+)
 
 test_insider_auction_data = deepcopy(test_auction_data)
 for item in test_insider_auction_data['items']:
@@ -110,12 +144,14 @@ class BaseInsiderWebTest(BaseWebTest):
     """
 
     relative_to = os.path.dirname(__file__)
+    mock_config = MOCK_CONFIG
 
 
 class BaseInsiderAuctionWebTest(BaseAuctionWebTest):
     relative_to = os.path.dirname(__file__)
     initial_data = test_insider_auction_data
     initial_organization = test_organization
+    mock_config = MOCK_CONFIG
 
     def set_status(self, status, extra=None):
         data = {'status': status}
