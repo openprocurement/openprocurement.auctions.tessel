@@ -74,7 +74,7 @@ Location: http://api-sandbox.ea.openprocurement.org/api/2.3/auctions/ca31727f31f
     ], 
     "owner": "broker", 
     "id": "86459d45ea7847a199f1ad3b0b983b05", 
-    "participationUrl": "http://auction-sandbox.openprocurement.org/tessel-auctions/ca31727f31f243b089cbc005b8fda5ba/login?bidder_id=86459d45ea7847a199f1ad3b0b983b05&signature=QEZ4%2BaAV1nTEGT%2BpXO2kWbk0NMp7rhadzC2IytuwSBzMD/BNsvVpYoi78aA24FC3u1HTJJILvdhsBcrbreVODQ%3D%3D"
+    "participationUrl": "http://auction-sandbox.openprocurement.org/insider-auctions/ca31727f31f243b089cbc005b8fda5ba/login?bidder_id=86459d45ea7847a199f1ad3b0b983b05&signature=QEZ4%2BaAV1nTEGT%2BpXO2kWbk0NMp7rhadzC2IytuwSBzMD/BNsvVpYoi78aA24FC3u1HTJJILvdhsBcrbreVODQ%3D%3D"
   }
 }
 

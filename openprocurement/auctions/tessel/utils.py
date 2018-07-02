@@ -29,8 +29,8 @@ def generate_auction_url(request, bid_id=None):
     if bid_id:
         auction_id = request.validated['auction_id']
         signature = quote(b64encode(request.registry.signer.signature('{}_{}'.format(auction_id,bid_id))))
-        return '{}/tessel-auctions/{}/login?bidder_id={}&signature={}'.format(auction_module_url, auction_id, bid_id, signature)
-    return '{}/tessel-auctions/{}'.format(auction_module_url, auction_id)
+        return '{}/insider-auctions/{}/login?bidder_id={}&signature={}'.format(auction_module_url, auction_id, bid_id, signature)
+    return '{}/insider-auctions/{}'.format(auction_module_url, auction_id)
 
 
 def check_auction_status(request):
