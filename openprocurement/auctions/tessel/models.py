@@ -15,6 +15,7 @@ from zope.interface import implementer
 
 from openprocurement.auctions.core.models import (
     Auction as BaseAuction,
+    SwiftsureProcuringEntity,
     SwiftsureItem as Item,
     swiftsureDocument,
     swiftsureBidDocument,
@@ -155,6 +156,7 @@ class TesselAuction(BaseAuction):
     minimalStep = ModelType(Value)
     registrationFee = ModelType(Guarantee)
     bankAccount = ModelType(BankAccount)
+    procuringEntity = ModelType(SwiftsureProcuringEntity, required=True)
 
     create_accreditation = 3
     edit_accreditation = 4
