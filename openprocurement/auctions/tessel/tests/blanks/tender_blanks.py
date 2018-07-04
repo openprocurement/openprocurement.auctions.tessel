@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
+from hashlib import sha512
+from uuid import uuid4
 from datetime import timedelta
 from iso8601 import parse_date
 import pytz
@@ -18,7 +20,7 @@ def create_role(self):
         'description', 'description_en', 'description_ru', 'tenderAttempts',
         'features', 'guarantee', 'hasEnquiries', 'items', 'lots', 'minimalStep', 'mode',
         'procurementMethodRationale', 'procurementMethodRationale_en', 'procurementMethodRationale_ru',
-        'procurementMethodType', 'procuringEntity',
+        'procurementMethodType', 'procuringEntity', 'status',
         'submissionMethodDetails', 'submissionMethodDetails_en', 'submissionMethodDetails_ru',
         'title', 'title_en', 'title_ru', 'value', 'auctionPeriod',
         'auctionParameters', 'merchandisingObject', 'bankAccount', 'registrationFee', 'documents'
@@ -273,6 +275,23 @@ def create_auction_auctionPeriod(self):
     else:
         self.assertEqual(parse_date(auction['tenderPeriod']['endDate']).date(), parse_date(auction['auctionPeriod']['shouldStartAfter'], TZ).date())
         self.assertGreater(parse_date(auction['tenderPeriod']['endDate']).time(), parse_date(auction['auctionPeriod']['shouldStartAfter'], TZ).time())
+
+
+def create_auction_in_pending_activation(self):
+    not_used_transfer = self.app.post_json('/transfers', {"data": {}}).json
+    self.app.authorization = ('Basic', ('concierge', ''))
+    transfer_token = sha512(not_used_transfer['access']['transfer']).hexdigest()
+    data = deepcopy(self.initial_data)
+    data['transfer_token'] = transfer_token
+    data['status'] = 'pending.activation'
+    data['merchandisingObject'] = uuid4().hex
+
+    response = self.app.post_json('/auctions', {'data': data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], data['status'])
+    self.assertEqual(response.json['data']['merchandisingObject'], data['merchandisingObject'])
+    self.assertNotIn('transfer', response.json['access'])
 
 
 def create_auction_generated(self):
