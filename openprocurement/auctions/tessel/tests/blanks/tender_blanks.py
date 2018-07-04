@@ -10,6 +10,9 @@ from openprocurement.auctions.core.tests.base import JSON_RENDERER_ERROR
 from openprocurement.auctions.core.utils import (
     SANDBOX_MODE, TZ, get_now
 )
+from openprocurement.auctions.tessel.constants import (
+    CONTRACT_TYPES
+)
 
 # InsiderAuctionTest
 
@@ -20,7 +23,7 @@ def create_role(self):
         'description', 'description_en', 'description_ru', 'tenderAttempts',
         'features', 'guarantee', 'hasEnquiries', 'items', 'lots', 'minimalStep', 'mode',
         'procurementMethodRationale', 'procurementMethodRationale_en', 'procurementMethodRationale_ru',
-        'procurementMethodType', 'procuringEntity', 'status',
+        'procurementMethodType', 'procuringEntity', 'status', 'contractTerms',
         'submissionMethodDetails', 'submissionMethodDetails_en', 'submissionMethodDetails_ru',
         'title', 'title_en', 'title_ru', 'value', 'auctionPeriod',
         'auctionParameters', 'merchandisingObject', 'bankAccount', 'registrationFee', 'documents'
@@ -249,6 +252,16 @@ def create_auction_invalid(self):
     self.assertEqual(response.json['status'], 'error')
     self.assertEqual(response.json['errors'], [
         {u'description': {u'contactPoint': {u'email': [u'telephone or email should be present']}}, u'location': u'body', u'name': u'procuringEntity'}
+    ])
+
+    self.initial_data['contractTerms'] = {'type': 'wrong_type'}
+    response = self.app.post_json(request_path, {'data': self.initial_data}, status=422)
+    del self.initial_data["contractTerms"]
+    self.assertEqual(response.status, '422 Unprocessable Entity')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['status'], 'error')
+    self.assertEqual(response.json['errors'], [
+        {u'description': [u'type must be one of {}'.format(CONTRACT_TYPES)], u'location': u'body', u'name': u'contractTerms'}
     ])
 
 

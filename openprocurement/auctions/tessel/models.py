@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 from pytz import UTC
+from functools import partial
 
 from pyramid.security import Allow
 from schematics.exceptions import ValidationError
@@ -22,6 +23,7 @@ from openprocurement.auctions.core.models import (
     dgfComplaint as Complaint,
     swiftsureCancellation,
     AuctionParameters,
+    ContractTerms,
     tessel_auction_roles,
     ComplaintModelType,
     Model,
@@ -38,7 +40,8 @@ from openprocurement.auctions.core.models import (
     validate_features_uniq,
     validate_lots_uniq,
     validate_items_uniq,
-    validate_not_available
+    validate_not_available,
+    validate_contract_type
 )
 from openprocurement.auctions.core.plugins.awarding.v3_1.models import (
     Award
@@ -59,9 +62,13 @@ from openprocurement.auctions.tessel.constants import (
     DUTCH_PERIOD,
     QUICK_DUTCH_PERIOD,
     NUMBER_OF_STAGES,
-    AUCTION_STATUSES
+    AUCTION_STATUSES,
+    CONTRACT_TYPES
 )
 from openprocurement.auctions.tessel.utils import generate_auction_url, calc_auction_end_time
+
+
+validate_contract_type = partial(validate_contract_type, choices=CONTRACT_TYPES)
 
 
 class TesselAuctionParameters(AuctionParameters):
@@ -157,6 +164,7 @@ class TesselAuction(BaseAuction):
     registrationFee = ModelType(Guarantee)
     bankAccount = ModelType(BankAccount)
     procuringEntity = ModelType(SwiftsureProcuringEntity, required=True)
+    contractTerms = ModelType(ContractTerms, validators=[validate_contract_type])
 
     create_accreditation = 3
     edit_accreditation = 4

@@ -24,3 +24,5 @@ AUCTION_STATUSES = [
     'draft', 'pending.activation', 'active.tendering', 'active.auction', 'active.qualification',
     'active.awarded', 'complete', 'cancelled', 'unsuccessful'
 ]
+
+CONTRACT_TYPES = ['yoke']
