@@ -32,6 +32,7 @@ from openprocurement.auctions.tessel.tests.blanks.tender_blanks import (
     create_role,
     edit_role,
     # InsiderAuctionResourceTest
+    create_auction_in_pending_activation,
     create_auction_invalid,
     create_auction_auctionPeriod,
     create_auction_generated,
@@ -65,6 +66,7 @@ class InsiderAuctionResourceTest(BaseInsiderWebTest, AuctionResourceTestMixin, D
     test_create_auction_auctionPeriod = snitch(create_auction_auctionPeriod)
     test_create_auction_generated = snitch(create_auction_generated)
     test_create_auction = snitch(create_auction)
+    test_create_auction_in_pending_activation = snitch(create_auction_in_pending_activation)
 
 
 class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
