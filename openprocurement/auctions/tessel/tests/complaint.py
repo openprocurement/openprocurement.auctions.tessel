@@ -8,10 +8,12 @@ from openprocurement.auctions.core.tests.complaint import (
 )
 
 
+@unittest.skip("option not available")
 class InsiderAuctionComplaintResourceTest(BaseInsiderAuctionWebTest, AuctionComplaintResourceTestMixin):
     """Test Case for Auction Complaint resource"""
 
 
+@unittest.skip("option not available")
 class InsiderAuctionComplaintDocumentResourceTest(BaseInsiderAuctionWebTest, InsiderAuctionComplaintDocumentResourceTestMixin):
 
     def setUp(self):

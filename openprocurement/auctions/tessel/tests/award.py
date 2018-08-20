@@ -20,7 +20,7 @@ from openprocurement.auctions.tessel.tests.base import (
 
 
 class InsiderAuctionCreateAwardTest(BaseInsiderAuctionWebTest, CreateAuctionAwardTestMixin):
-    initial_status = 'active.qualification'
+    initial_status = 'active.auction'
     initial_bids = test_bids
 
 
