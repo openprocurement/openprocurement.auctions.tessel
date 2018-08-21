@@ -176,6 +176,21 @@ class TesselAuction(BaseAuction):
             (Allow, '{}_{}'.format(self.owner, self.owner_token), 'upload_auction_documents'),
         ]
 
+    def get_role(self):
+        root = self.__parent__
+        request = root.request
+        if request.authenticated_role == 'Administrator':
+            role = 'Administrator'
+        elif request.authenticated_role == 'chronograph':
+            role = 'chronograph'
+        elif request.authenticated_role == 'auction':
+            role = 'auction_{}'.format(request.method.lower())
+        elif request.authenticated_role == 'convoy':
+            role = 'convoy'
+        else:
+            role = 'edit_{}'.format(request.context.status)
+        return role
+
     def initialize(self):
         pass
 
