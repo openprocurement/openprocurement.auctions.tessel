@@ -19,6 +19,7 @@ from openprocurement.auctions.tessel.constants import (
     DUTCH_PERIOD,
     QUICK_DUTCH_PERIOD
 )
+from openprocurement.auctions.tessel.validation import validate_post_auction_status_role
 
 
 class AuctionTesselConfigurator(AuctionConfigurator,
@@ -28,8 +29,11 @@ class AuctionTesselConfigurator(AuctionConfigurator,
 
 
 class AuctionTesselManagerAdapter(AuctionManagerAdapter):
+    create_validation = (validate_post_auction_status_role,)
 
     def create_auction(self, request):
+        self._validate(request, self.create_validation)
+
         auction = request.validated['auction']
         if not auction.enquiryPeriod:
             auction.enquiryPeriod = type(auction).enquiryPeriod.model_class()
