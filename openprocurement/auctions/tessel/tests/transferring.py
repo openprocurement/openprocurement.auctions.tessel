@@ -7,9 +7,10 @@ from openprocurement.auctions.core.tests.plugins.transferring.mixins import Auct
 from openprocurement.auctions.core.tests.plugins.transferring.blanks.resource_blanks import (
     create_auction_by_concierge
 )
+from openprocurement.auctions.tessel.tests.blanks.transferring_blanks import check_pending_activation
 
-class AuctionOwnershipChangeResourceTest(BaseInsiderAuctionWebTest,
-                                         AuctionOwnershipChangeTestCaseMixin):
+
+class AuctionOwnershipChangeResourceTest(BaseInsiderAuctionWebTest, AuctionOwnershipChangeTestCaseMixin):
     first_owner = 'broker3'
     second_owner = 'broker3'
     concierge = 'concierge'
@@ -17,13 +18,14 @@ class AuctionOwnershipChangeResourceTest(BaseInsiderAuctionWebTest,
     invalid_owner = 'broker1'
     initial_auth = ('Basic', (first_owner, ''))
 
-    test_new_owner_can_change = None  # tessel auction can not be changed during enquiryPeriod
+    test_new_owner_can_change = None # tessel auction can not be changed during enquiryPeriod
+    test_check_pending_activation = snitch(check_pending_activation)
     test_create_auction_by_concierge = snitch(create_auction_by_concierge)
-
 
     def setUp(self):
         super(AuctionOwnershipChangeResourceTest, self).setUp()
         self.not_used_transfer = self.create_transfer()
+
 
 def suite():
     tests = unittest.TestSuite()
