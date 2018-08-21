@@ -27,7 +27,11 @@ PARTIAL_MOCK_CONFIG = {
             "tessel.migration": None
         },
         "migration": False,
-        "aliases": []
+        "aliases": [],
+        "accreditation": {
+            "create": [3],
+            "edit": [4]
+        }
     }
 }
 MOCK_CONFIG_PARTIAL_AUCTION = {

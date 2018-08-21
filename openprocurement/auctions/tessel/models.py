@@ -142,7 +142,7 @@ class TesselAuction(BaseAuction):
     """Data regarding auction process - publicly inviting prospective contractors to submit bids for evaluation and selecting a winner or winners."""
     class Options:
         roles = tessel_auction_roles
-    _procedure_type = "tessel"
+    _internal_type = "tessel"
     awards = ListType(ModelType(Award), default=list())
     cancellations = ListType(ModelType(swiftsureCancellation), default=list())
     complaints = ListType(ComplaintModelType(Complaint), default=list())
@@ -165,9 +165,6 @@ class TesselAuction(BaseAuction):
     bankAccount = ModelType(BankAccount)
     procuringEntity = ModelType(SwiftsureProcuringEntity, required=True)
     contractTerms = ModelType(ContractTerms, validators=[validate_contract_type])
-
-    create_accreditation = 3
-    edit_accreditation = 4
 
     def __acl__(self):
         return [
