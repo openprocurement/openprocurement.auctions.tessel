@@ -29,8 +29,8 @@ PARTIAL_MOCK_CONFIG = {
         "migration": False,
         "aliases": [],
         "accreditation": {
-            "create": [1],
-            "edit": [2]
+            "create": [3],
+            "edit": [4]
         }
     }
 }

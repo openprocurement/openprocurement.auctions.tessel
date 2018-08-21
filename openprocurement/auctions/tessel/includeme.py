@@ -11,7 +11,9 @@ from openprocurement.auctions.tessel.adapters import (
     AuctionTesselManagerAdapter
 )
 from openprocurement.auctions.tessel.constants import (
-    VIEW_LOCATIONS, DEFAULT_PROCUREMENT_METHOD_TYPE
+    VIEW_LOCATIONS,
+    DEFAULT_PROCUREMENT_METHOD_TYPE,
+    DEFAULT_LEVEL_OF_ACCREDITATION
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -42,4 +44,7 @@ def includeme(config, plugin_config=None):
     LOGGER.info("Included openprocurement.auctions.tessel plugin", extra={'MESSAGE_ID': 'included_plugin'})
 
     # add accreditation level
-    config.registry.accreditation['auction'][TesselAuction._internal_type] = plugin_config['accreditation']
+    if not plugin_config.get('accreditation'):
+        config.registry.accreditation['auction'][TesselAuction._internal_type] = DEFAULT_LEVEL_OF_ACCREDITATION
+    else:
+        config.registry.accreditation['auction'][TesselAuction._internal_type] = plugin_config['accreditation']
