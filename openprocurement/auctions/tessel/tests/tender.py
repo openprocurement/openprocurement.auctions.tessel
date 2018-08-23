@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 import unittest
 from copy import deepcopy
-from datetime import datetime, timedelta, time
-from uuid import uuid4
-from iso8601 import parse_date
-import pytz
 
 from openprocurement.auctions.core.tests.base import snitch
 from openprocurement.auctions.core.tests.tender import (
-    AuctionResourceTestMixin, DgfInsiderResourceTestMixin
+    AuctionResourceTestMixin,
+    DgfInsiderResourceTestMixin,
+    ExtractCredentialsMixin
 )
 from openprocurement.auctions.core.tests.blanks.tender_blanks import (
     # AuctionTest
@@ -25,7 +23,7 @@ from openprocurement.auctions.tessel.tests.base import (
     test_insider_auction_data,
     test_organization,
     BaseInsiderAuctionWebTest, BaseInsiderWebTest,
-    test_insider_auction_data_with_schema, test_insider_auction_data_with_schema,
+    test_insider_auction_data_with_schema
 )
 from openprocurement.auctions.tessel.tests.blanks.tender_blanks import (
     # InsiderAuctionTest
@@ -73,7 +71,7 @@ class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
     test_financial_organization = test_organization
     docservice = True
 
-    #setUp = BaseInsiderWebTest.setUp
+    # setUp = BaseInsiderWebTest.setUp
     def setUp(self):
         super(InsiderAuctionProcessTest.__bases__[0], self).setUp()
 
@@ -118,7 +116,6 @@ class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
         self.assertEqual(response.json['data']['auctionParameters']['type'], 'insider')
         auction_id = self.auction_id = response.json['data']['id']
         owner_token = response.json['access']['token']
-
 
         #  Patch auctionParameters (Not allowed)
         response = self.app.patch_json('/auctions/{}?acc_token={}'.format(auction_id, owner_token), {
@@ -171,9 +168,12 @@ class InsiderAuctionSchemaResourceTest(InsiderAuctionResourceTest):
     #                      }])
 
 
-
 class InsiderAuctionSchemaProcessTest(InsiderAuctionProcessTest):
     initial_data = test_insider_auction_data_with_schema
+
+
+class AuctionExtractCredentialsTest(BaseInsiderAuctionWebTest, ExtractCredentialsMixin):
+    pass
 
 
 def suite():
@@ -183,7 +183,7 @@ def suite():
     suite.addTest(unittest.makeSuite(InsiderAuctionTest))
     suite.addTest(unittest.makeSuite(InsiderAuctionSchemaResourceTest))
     suite.addTest(unittest.makeSuite(InsiderAuctionSchemaProcessTest))
-
+    suite.addTest(unittest.makeSuite(AuctionExtractCredentialsTest))
     return suite
 
 
