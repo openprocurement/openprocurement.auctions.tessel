@@ -58,6 +58,7 @@ test_insider_auction_data = deepcopy(test_auction_data)
 for item in test_insider_auction_data['items']:
     item['classification']['scheme'] = 'CPV'
     item['classification']['id'] = '51413000-0'
+    item['registrationDetails'] = {"status": "unknown"}
 
 test_insider_auction_data['auctionParameters'] = {
     'type': 'insider',
