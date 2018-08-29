@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
-from pytz import UTC
 from functools import partial
 
 from pyramid.security import Allow
 from schematics.exceptions import ValidationError
-from schematics.transforms import whitelist
-from schematics.types import StringType, BooleanType, IntType, DateType, MD5Type
+from schematics.types import StringType, BooleanType, IntType, MD5Type
 from schematics.types.compound import ModelType
-from schematics.exceptions import ValidationError
 from schematics.transforms import blacklist, whitelist
 
 from schematics.types.serializable import serializable
@@ -17,7 +13,7 @@ from zope.interface import implementer
 from openprocurement.auctions.core.models import (
     Auction as BaseAuction,
     SwiftsureProcuringEntity,
-    SwiftsureItem as Item,
+    LokiItem as Item,
     swiftsureDocument,
     swiftsureBidDocument,
     dgfComplaint as Complaint,
