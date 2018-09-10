@@ -10,9 +10,11 @@ from schematics.transforms import blacklist, whitelist
 from schematics.types.serializable import serializable
 from zope.interface import implementer
 
+from openprocurement.api.models.schema import (
+    SwiftsureProcuringEntity,
+)
 from openprocurement.auctions.core.models import (
     Auction as BaseAuction,
-    SwiftsureProcuringEntity,
     LokiItem as Item,
     swiftsureDocument,
     swiftsureBidDocument,
