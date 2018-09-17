@@ -7,6 +7,7 @@ from openprocurement.auctions.core.utils import (
     get_now,
     TZ,
 )
+from openprocurement.auctions.core.interfaces import IAuctionManager
 from openprocurement.auctions.core.models import AUCTION_STAND_STILL_TIME
 
 from openprocurement.auctions.tessel.constants import (
@@ -28,13 +29,14 @@ def generate_auction_url(request, bid_id=None):
     auction_id = request.validated['auction']['id']
     if bid_id:
         auction_id = request.validated['auction_id']
-        signature = quote(b64encode(request.registry.signer.signature('{}_{}'.format(auction_id,bid_id))))
+        signature = quote(b64encode(request.registry.signer.signature('{}_{}'.format(auction_id, bid_id))))
         return '{}/insider-auctions/{}/login?bidder_id={}&signature={}'.format(auction_module_url, auction_id, bid_id, signature)
     return '{}/insider-auctions/{}'.format(auction_module_url, auction_id)
 
 
 def check_auction_status(request):
     auction = request.validated['auction']
+    adapter = request.registry.getAdapter(auction, IAuctionManager)
     if auction.awards:
         awards_statuses = set([award.status for award in auction.awards])
     else:
@@ -42,11 +44,11 @@ def check_auction_status(request):
     if not awards_statuses.difference(set(['unsuccessful', 'cancelled'])):
         LOGGER.info('Switched auction {} to {}'.format(auction.id, 'unsuccessful'),
                     extra=context_unpack(request, {'MESSAGE_ID': 'switched_auction_unsuccessful'}))
-        auction.status = 'unsuccessful'
+        adapter.pendify_auction_status('unsuccessful')
     if auction.contracts and auction.contracts[-1].status == 'active':
         LOGGER.info('Switched auction {} to {}'.format(auction.id, 'complete'),
                     extra=context_unpack(request, {'MESSAGE_ID': 'switched_auction_complete'}))
-        auction.status = 'complete'
+        adapter.pendify_auction_status('complete')
 
 
 def check_status(request):
