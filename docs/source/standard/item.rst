@@ -8,11 +8,15 @@
 Item
 ====
 
+Originates from `lot.items <http://lotsloki.api-docs.registry.ea2.openprocurement.io/en/latest/standard/item.html>`_.
+
 Schema
 ------
 
 :id:
-    string, auto-generated
+    uuid, auto-generated, required
+
+    Internal identifier for this item.
 
 :description:
     string, multilingual, required
@@ -20,19 +24,18 @@ Schema
     |ocdsDescription|
     A description of the goods, services to be provided.
     
-    
 :classification:
-    :ref:`Classification`
+    :ref:`Classification`, required
 
     |ocdsDescription|
     The primary classification for the item. See the
     `itemClassificationScheme` to identify preferred classification lists.
 
-    It is required for `classification.scheme` to be `CPV`. The
-    `classification.id` should be valid CPV code.
+    It is required for `classification.scheme` to be `CPV` or `CAV-PS`. The
+    `classification.id` should be valid `CPV` or `CAV-PS` code.
 
 :additionalClassifications:
-    List of :ref:`Classification` objects
+    Array of :ref:`Classification` objects, optional
 
     |ocdsDescription|
     An array of additional classifications for the item. See the
@@ -40,28 +43,26 @@ Schema
     This may also be used to present codes from an internal classification
     scheme.
 
-    One of the possible additional classifiers is CPVS.
-
 :unit:
-    :ref:`Unit`
+    :ref:`Unit`, required
 
     |ocdsDescription| 
     Description of the unit which the good comes in e.g.  hours, kilograms. 
     Made up of a unit name, and the value of a single unit.
 
 :quantity:
-    decimal
+    decimal, required
 
     |ocdsDescription|
-    The number of units required
+    The number of units required.
 
 :address:
-    :ref:`Address`
+    :ref:`Address`, required
 
-    Address, where property or asset(s) is located.
+    Address, where item is located.
 
 :location:
-    dictionary
+    dictionary, optional
 
     Geographical coordinates of the location. Element consists of the following items:
 
@@ -74,11 +75,8 @@ Schema
 
     `location` usually takes precedence over `address` if both are present.
 
-.. :relatedLot:
-    string
-
-    ID of related :ref:`lot`.
-
+:registrationDetails:
+    :ref:`registrationDetails`, required
 
 .. _Classification:
 
@@ -89,7 +87,7 @@ Schema
 ------
 
 :scheme:
-    string
+    string, required
 
     |ocdsDescription|
     A classification should be drawn from an existing scheme or list of
@@ -98,19 +96,19 @@ Schema
     should represent a known Item Classification Scheme wherever possible.
 
 :id:
-    string
+    string, required
 
     |ocdsDescription|
     The classification code drawn from the selected scheme.
 
 :description:
-    string
+    string, required
 
     |ocdsDescription|
     A textual description or title for the code.
 
 :uri:
-    uri
+    uri, optional
 
     |ocdsDescription|
     A URI to identify the code. In the event individual URIs are not
@@ -131,7 +129,40 @@ Schema
     UN/CEFACT Recommendation 20 unit code.
 
 :name:
-    string
+    string, optional
 
     |ocdsDescription|
     Name of the unit
+
+.. _registrationDetails:
+
+Registration Details
+====================
+
+Schema
+------
+
+:status:
+    string, required
+
+    Possible values are:
+
+    :`unknown`: 
+        default value;
+    :`registering`:
+        item is still registering;
+    :`complete`:
+        item has already been registered.
+
+:registrationID:
+    string, optional
+
+    The document identifier to refer to in the `paper` documentation.
+
+    Available for mentioning in status: complete.
+
+:registrationDate:
+    :ref:`Date`, optional
+
+    |ocdsDescription|
+    The date on which the document was first published.

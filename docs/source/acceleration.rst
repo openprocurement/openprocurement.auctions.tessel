@@ -10,20 +10,11 @@ Acceleration mode was developed to enable the procedure testing in the sandbox a
 To enable acceleration mode you will need to:
     * add additional parameter `mode` with a value ``test``;
     * set ``quick, accelerator=1440`` as text value for `procurementMethodDetails`. This parameter will accelerate auction periods. The number 1440 shows that restrictions and time frames will be reduced in 1440 times.
-    * set ``quick`` as a value for `submissionMethodDetails`. This parameter works only with ``mode = "test"`` and will speed up auction start date.
+    * for the `submissionMethodDetails` you need to select 1 of 4 options:
+          * set ``fast-forward,dutch=-:-,sealedbid=-:---,bestbid=-:---`` as text value. ``dutch= - : -`` - at which step and who won in `dutch` part. ``sealedbid= - : ---`` - who scored on `sealedbid` and with what rate. ``bestbid= - : ---`` - who scored on `bestbid` and with what rate.
+          * set ``fast-forward,option1`` as text value. The auction will have a bet in `dutch` part.
+          * set ``fast-forward,option2`` as text value. The auction will have a bet in `dutch` part, two bets on `sealedbid`.
+          * set ``fast-forward,option3`` as text value. The auction will have a bet in `dutch` part, two bets on `sealedbid`, and a bet on `bestbid`.
+
 
 **This mode will work only in the sandbox**.
-
-.. include:: tutorial/auction-post-acceleration.http
-   :code:
-
-Synchronization
-~~~~~~~~~~~~~~~
-
-* During normal auction synchronization via ``/auctions`` test auctions are not visible.
-
-* To get test auctions synchronize via ``/auctions?mode=test``.
-
-* If you synchronize via ``/auctions?mode=all``, then you will get all auctions.
-
-* Auction mode can be set only on auction creation, it can not be set later.

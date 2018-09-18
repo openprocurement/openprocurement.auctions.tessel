@@ -11,18 +11,20 @@ Schema
 ------
 
 :tenderers:
-    List of :ref:`Organization` objects
+    List of :ref:`Organization` objects, required
 
 :date:
     string, :ref:`date`, auto-generated
-    
+
     Date when bid has been submitted.
 
 :id:
-    UID, auto-generated
+    uuid, auto-generated
+
+    Internal identifire of bid.
 
 :status:
-    string
+    string, required
 
     Possible values are:
 
@@ -34,43 +36,26 @@ Schema
 
     Validation rules:
 
+    * `amount` should be less than `Auction.value.amout`
     * `currency` should either be absent or match `Auction.value.currency`
     * `valueAddedTaxIncluded` should either be absent or match `Auction.value.valueAddedTaxIncluded`
 
 :documents:
-    List of :ref:`Document` objects
+    Array of :ref:`Document`, optional
 
-:parameters:
-    List of :ref:`Parameter` objects
-
-.. :lotValues:
-    List of :ref:`LotValue` objects
+    All documents needed.
 
 :participationUrl:
-    URL
+    URL, auto-generated
 
     A web address for participation in auction.
 
 :qualified:
     bool, required
 
-    
-.. _Parameter:
+    Confirms the absence of grounds for refusal to participate. CDB accepts only true value.
 
-Parameter
-=========
+:eligible:
+    bool, optional 
 
-Schema
-------
-
-:code:
-    string, required
-
-    Feature code.
-
-:value:
-    float, required
-
-    Feature value.
-
-
+    Confirms compliance of eligibility criteria set by the customer in the tendering documents. CDB accepts only true value.

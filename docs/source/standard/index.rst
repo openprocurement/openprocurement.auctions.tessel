@@ -18,9 +18,7 @@ areas that were not covered by it.
    bid
    award
    question
-   complaint
    contract
-   prolongation
    util
    cancellation
    procuringentity
