@@ -12,19 +12,19 @@ Schema
 ------
 
 :name:
-    string, multilingual
+    string, multilingual, optional
 
     |ocdsDescription|
     The common name of the organization.
 
 :identifier:
-    :ref:`Identifier`
+    :ref:`Identifier`, required
 
     |ocdsDescription|
     The primary identifier for this organization.
 
 :additionalIdentifiers:
-    List of :ref:`identifier` objects
+    Array of :ref:`identifier` objects
 
 :address:
     :ref:`Address`, required
@@ -33,7 +33,7 @@ Schema
     :ref:`ContactPoint`, required
 
 :kind:
-    string
+    string, optional
     
     Type of organizer
 
@@ -41,4 +41,3 @@ Schema
         - ``general`` - Organizer (general)
         - ``special`` - Organizer that operates in certain spheres of economic activity
         - ``other`` -  Legal persons that are not organizers in the sense of the Law, but are state, utility, public enterprises, economic partnerships or associations of enterprises in which state or public utility share is 50 percent or more
-

@@ -10,7 +10,9 @@ Schema
 ------
 
 :id:
-    UID, auto-generated
+    uuid, auto-generated, read-only
+
+    Internal identifier of the object within an array.
 
 :author:
     :ref:`Organization`, required
@@ -23,33 +25,29 @@ Schema
     Title of the question.
 
 :description:
-    string
+    string, optional
 
     Description of the question.
 
 :date:
-    string, :ref:`date`, auto-generated
+    :ref:`date`, auto-generated, read-only
 
     Date of posting.
 
 :answer:
-    string
+    string, optional
 
     Answer for the question.
 
 :questionOf:
-    string
+    string, required
 
     Possible values are:
 
-    * `auction`
+    * `tender`
     * `item`
-..    * `lot`
 
 :relatedItem:
-    string
+    string, optional
 
     ID of related :ref:`item`.
-
-..    ID of related :ref:`lot` or :ref:`item`.
-

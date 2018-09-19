@@ -11,34 +11,25 @@ Schema
 ------
 
 :id:
-    UID, auto-generated
+    uuid, auto-generated
 
     |ocdsDescription|
     The identifier for this contract.
 
 :awardID:
-    string, required
+    string, required, auto-generated
 
     |ocdsDescription|
     The `Award.id` against which this contract is being issued.
 
 :contractID:
-       string, auto-generated, read-only
+    string, auto-generated, read-only
+
+    |ocdsDescription|
+    The `Contract.id` against which this contract is being issued.
 
 :contractNumber:
-       string
-
-:title:
-    string, required
-
-    |ocdsDescription|
-    Contract title
-
-:description:
-    string
-
-    |ocdsDescription|
-    Contract description
+       string, optional
 
 :value:
     `Value` object, auto-generated, read-only
@@ -47,13 +38,13 @@ Schema
     The total value of this contract.
 
 :items:
-    List of :ref:`Item` objects, auto-generated, read-only
+    Array of :ref:`Item` objects, auto-generated, read-only
 
     |ocdsDescription|
     The goods, services, and any intangible outcomes in this contract. Note: If the items are the same as the award, do not repeat.
 
 :suppliers:
-    List of :ref:`Organization` objects, auto-generated, read-only
+    Array of :ref:`Organization` objects, auto-generated, read-only
 
 :status:
     string, required
@@ -71,12 +62,6 @@ Schema
     * `terminated` - this contract was signed and in force, and has now come
       to a close.  This may be due to a successful completion of the contract,
       or may be early termination due to some non-completion issue.
-
-:period:
-    :ref:`Period`
-
-    |ocdsDescription|
-    The start and end date for the contract.
 
 :dateSigned:
     string, :ref:`date`
@@ -102,7 +87,7 @@ Schema
     The date when the contract was changed or activated.
 
 :documents:
-    List of :ref:`Document` objects
+    Array of :ref:`Document` objects
 
     |ocdsDescription|
     All documents and attachments related to the contract, including any notices.
