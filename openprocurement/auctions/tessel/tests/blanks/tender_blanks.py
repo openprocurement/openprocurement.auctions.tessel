@@ -26,7 +26,7 @@ def create_role(self):
         'procurementMethodType', 'procuringEntity', 'status', 'contractTerms',
         'submissionMethodDetails', 'submissionMethodDetails_en', 'submissionMethodDetails_ru',
         'title', 'title_en', 'title_ru', 'value', 'auctionPeriod',
-        'auctionParameters', 'merchandisingObject', 'bankAccount', 'registrationFee', 'documents'
+        'auctionParameters', 'merchandisingObject', 'bankAccount', 'registrationFee',
     ])
     if SANDBOX_MODE:
         fields.add('procurementMethodDetails')
