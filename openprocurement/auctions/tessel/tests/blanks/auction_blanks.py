@@ -274,7 +274,7 @@ def post_auction_one_valid_bid(self):
 
     self.assertEqual('active.qualification', auction["status"])
     self.assertEqual(len(auction['awards']), 1)
-    self.assertEqual(auction['awards'][0]['status'], 'pending.admission')
+    self.assertEqual(auction['awards'][0]['status'], 'pending')
 
 
 def post_auction_zero_bids(self):
