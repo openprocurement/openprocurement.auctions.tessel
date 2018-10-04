@@ -35,6 +35,12 @@ class AuctionTesselManagerAdapter(AuctionManagerAdapter):
         self._validate(request, self.create_validation)
 
         auction = request.validated['auction']
+
+        for i in request.validated['json_data'].get('documents', []):
+            document = type(auction).documents.model_class(i)
+            document.__parent__ = auction
+            auction.documents.append(document)
+
         if not auction.enquiryPeriod:
             auction.enquiryPeriod = type(auction).enquiryPeriod.model_class()
         if not auction.tenderPeriod:
