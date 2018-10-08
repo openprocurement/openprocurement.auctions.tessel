@@ -26,6 +26,7 @@ class AuctionTesselConfigurator(AuctionConfigurator,
                                 AwardingV3_1ConfiguratorMixin):
     name = 'Auction Tessel Configurator'
     model = TesselAuction
+    pending_admission_for_one_bid = False
 
 
 class AuctionTesselManagerAdapter(AuctionManagerAdapter):
