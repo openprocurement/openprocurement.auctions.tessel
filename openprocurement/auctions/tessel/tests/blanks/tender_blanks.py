@@ -308,7 +308,20 @@ def create_auction_in_pending_activation(self):
 
 
 def create_auction_generated(self):
+    document = {
+        'id': '1' * 32,
+        'documentType': 'x_dgfAssetFamiliarization',
+        'title': u'\u0443\u043a\u0440.doc',
+        'accessDetails': 'access details',
+        'format': 'application/msword',
+        'datePublished': get_now().isoformat(),
+        'dateModified': get_now().isoformat(),
+        'documentOf': 'lot',
+        'relatedItem': '2' * 32
+    }
+
     data = self.initial_data.copy()
+    data['documents'] = [document]
     #del data['awardPeriod']
     data.update({'id': 'hash', 'doc_id': 'hash2', 'auctionID': 'hash3'})
     response = self.app.post_json('/auctions', {'data': data})
@@ -327,6 +340,8 @@ def create_auction_generated(self):
     self.assertNotEqual(data['id'], auction['id'])
     self.assertNotEqual(data['doc_id'], auction['id'])
     self.assertNotEqual(data['auctionID'], auction['auctionID'])
+    # Check all field of document in post data appear in created auction
+    self.assertEqual(document, auction['documents'][0])
 
 
 def create_auction(self):
