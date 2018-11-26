@@ -35,6 +35,7 @@ from openprocurement.auctions.core.models import (
     Lot,
     Guarantee,
     BankAccount,
+    RelatedProcess,
     validate_features_uniq,
     validate_lots_uniq,
     validate_items_uniq,
@@ -154,7 +155,7 @@ class TesselAuction(BaseAuction):
     lots = ListType(ModelType(Lot), default=list(), validators=[validate_lots_uniq, validate_not_available])
     items = ListType(ModelType(Item), required=True, min_size=1, validators=[validate_items_uniq])
     suspended = BooleanType()
-    merchandisingObject = MD5Type()
+    relatedProcesses = ListType(ModelType(RelatedProcess), default=list(), max_size=1)
     bids = ListType(ModelType(Bid), default=list())  # A list of all the companies who entered submissions for the auction.
     auctionPeriod = ModelType(AuctionAuctionPeriod, required=True, default={})
     auctionParameters = ModelType(TesselAuctionParameters)
