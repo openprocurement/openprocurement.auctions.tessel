@@ -7,6 +7,9 @@ from iso8601 import parse_date
 import pytz
 
 from openprocurement.auctions.core.tests.base import JSON_RENDERER_ERROR
+from openprocurement.auctions.core.tests.fixtures.related_process import (
+    test_related_process_data,
+)
 from openprocurement.auctions.core.utils import (
     SANDBOX_MODE, TZ, get_now
 )
@@ -26,7 +29,7 @@ def create_role(self):
         'procurementMethodType', 'procuringEntity', 'status', 'contractTerms',
         'submissionMethodDetails', 'submissionMethodDetails_en', 'submissionMethodDetails_ru',
         'title', 'title_en', 'title_ru', 'value', 'auctionPeriod',
-        'auctionParameters', 'merchandisingObject', 'bankAccount', 'registrationFee',
+        'auctionParameters', 'relatedProcesses', 'bankAccount', 'registrationFee',
     ])
     if SANDBOX_MODE:
         fields.add('procurementMethodDetails')
@@ -297,13 +300,17 @@ def create_auction_in_pending_activation(self):
     data = deepcopy(self.initial_data)
     data['transfer_token'] = transfer_token
     data['status'] = 'pending.activation'
-    data['merchandisingObject'] = uuid4().hex
+    data['relatedProcesses'] = [deepcopy(test_related_process_data)]
+    data['relatedProcesses'][0]['type'] = 'lot'
 
     response = self.app.post_json('/auctions', {'data': data})
     self.assertEqual(response.status, '201 Created')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['status'], data['status'])
-    self.assertEqual(response.json['data']['merchandisingObject'], data['merchandisingObject'])
+    self.assertEqual(
+        response.json['data']['relatedProcesses'][0]['relatedProcessID'],
+        data['relatedProcesses'][0]['relatedProcessID']
+    )
     self.assertNotIn('transfer', response.json['access'])
 
 
