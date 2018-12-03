@@ -7,11 +7,11 @@ from openprocurement.auctions.core.tests.bidder import (
 from openprocurement.auctions.core.tests.blanks.bidder_blanks import create_auction_bidder
 from openprocurement.auctions.core.tests.base import snitch
 from openprocurement.auctions.tessel.tests.base import (
-    BaseInsiderAuctionWebTest,
+    BaseTesselAuctionWebTest,
     test_organization,
 )
 from openprocurement.auctions.tessel.tests.blanks.bidder_blanks import (
-    # InsiderAuctionBidderResourceTest
+    # TesselAuctionBidderResourceTest
     create_auction_bidder_invalid,
     create_auction_bidder_without_value,
     patch_auction_bidder,
@@ -21,13 +21,13 @@ from openprocurement.auctions.tessel.tests.blanks.bidder_blanks import (
     delete_auction_bidder,
     get_auction_auctioners,
     bid_Administrator_change,
-    # InsiderAuctionBidderDocumentResourceTest
+    # TesselAuctionBidderDocumentResourceTest
     create_auction_bidder_document_nopending,
     patch_auction_bidder_document
 )
 
 
-class InsiderAuctionBidderResourceTest(BaseInsiderAuctionWebTest):
+class TesselAuctionBidderResourceTest(BaseTesselAuctionWebTest):
     initial_status = 'active.tendering'
     test_financial_organization = test_organization
 
@@ -43,12 +43,12 @@ class InsiderAuctionBidderResourceTest(BaseInsiderAuctionWebTest):
     test_bid_Administrator_change = snitch(bid_Administrator_change)
 
 
-class InsiderAuctionBidderDocumentResourceTest(BaseInsiderAuctionWebTest,
+class TesselAuctionBidderDocumentResourceTest(BaseTesselAuctionWebTest,
                                                AuctionBidderDocumentResourceTestMixin):
     initial_status = 'active.tendering'
 
     def setUp(self):
-        super(InsiderAuctionBidderDocumentResourceTest, self).setUp()
+        super(TesselAuctionBidderDocumentResourceTest, self).setUp()
         # Create bid
         response = self.app.post_json('/auctions/{}/bids'.format(
             self.auction_id), {'data': {'tenderers': [self.initial_organization], 'qualified': True, 'eligible': True}})
@@ -60,7 +60,7 @@ class InsiderAuctionBidderDocumentResourceTest(BaseInsiderAuctionWebTest,
     test_patch_auction_bidder_document  = snitch(patch_auction_bidder_document)
 
 
-class InsiderAuctionBidderDocumentWithDSResourceTest(InsiderAuctionBidderDocumentResourceTest,
+class TesselAuctionBidderDocumentWithDSResourceTest(TesselAuctionBidderDocumentResourceTest,
                                                      AuctionBidderDocumentResourceTestMixin,
                                                      AuctionBidderDocumentWithDSResourceTestMixin
                                                      ):
@@ -69,9 +69,9 @@ class InsiderAuctionBidderDocumentWithDSResourceTest(InsiderAuctionBidderDocumen
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionBidderResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionBidderDocumentResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionBidderDocumentWithDSResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionBidderResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionBidderDocumentResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionBidderDocumentWithDSResourceTest))
     return tests
 
 

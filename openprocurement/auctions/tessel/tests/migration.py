@@ -8,7 +8,7 @@ from openprocurement.auctions.tessel.tests.base import (
     test_bids as test_bids
 )
 from openprocurement.auctions.tessel.tests.base import (
-    BaseInsiderAuctionWebTest,
+    BaseTesselAuctionWebTest,
 )
 from openprocurement.auctions.tessel.migration import (
     migrate_data,
@@ -19,7 +19,7 @@ from openprocurement.auctions.tessel.tests.blanks.migration_blanks import (
 )
 
 
-class MigrateTestFrom2To3WithTwoBids(BaseInsiderAuctionWebTest):
+class MigrateTestFrom2To3WithTwoBids(BaseTesselAuctionWebTest):
     initial_status = 'active.qualification'
     initial_bids = test_bids
     docservice = True
@@ -41,7 +41,7 @@ class MigrateTestFrom2To3WithTwoBids(BaseInsiderAuctionWebTest):
     )
 
 
-class MigrateTestFrom2To3Schema(BaseInsiderAuctionWebTest):
+class MigrateTestFrom2To3Schema(BaseTesselAuctionWebTest):
     initial_status = 'active.awarded'
     initial_bids = test_bids
     docservice = True

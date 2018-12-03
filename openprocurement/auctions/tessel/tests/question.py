@@ -3,16 +3,16 @@ import unittest
 
 from openprocurement.auctions.core.tests.question import AuctionQuestionResourceTestMixin
 
-from openprocurement.auctions.tessel.tests.base import BaseInsiderAuctionWebTest
+from openprocurement.auctions.tessel.tests.base import BaseTesselAuctionWebTest
 
 
-class InsiderAuctionQuestionResourceTest(BaseInsiderAuctionWebTest, AuctionQuestionResourceTestMixin):
+class TesselAuctionQuestionResourceTest(BaseTesselAuctionWebTest, AuctionQuestionResourceTestMixin):
     pass
 
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionQuestionResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionQuestionResourceTest))
     return tests
 
 

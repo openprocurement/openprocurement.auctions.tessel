@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from openprocurement.auctions.tessel.tests.base import BaseInsiderAuctionWebTest
+from openprocurement.auctions.tessel.tests.base import BaseTesselAuctionWebTest
 from openprocurement.auctions.core.tests.complaint import (
     AuctionComplaintResourceTestMixin,
     InsiderAuctionComplaintDocumentResourceTestMixin
@@ -9,15 +9,15 @@ from openprocurement.auctions.core.tests.complaint import (
 
 
 @unittest.skip("option not available")
-class InsiderAuctionComplaintResourceTest(BaseInsiderAuctionWebTest, AuctionComplaintResourceTestMixin):
+class TesselAuctionComplaintResourceTest(BaseTesselAuctionWebTest, AuctionComplaintResourceTestMixin):
     """Test Case for Auction Complaint resource"""
 
 
 @unittest.skip("option not available")
-class InsiderAuctionComplaintDocumentResourceTest(BaseInsiderAuctionWebTest, InsiderAuctionComplaintDocumentResourceTestMixin):
+class TesselAuctionComplaintDocumentResourceTest(BaseTesselAuctionWebTest, InsiderAuctionComplaintDocumentResourceTestMixin):
 
     def setUp(self):
-        super(InsiderAuctionComplaintDocumentResourceTest, self).setUp()
+        super(TesselAuctionComplaintDocumentResourceTest, self).setUp()
         # Create complaint
         response = self.app.post_json('/auctions/{}/complaints'.format(
             self.auction_id), {'data': {'title': 'complaint title', 'description': 'complaint description', 'author': self.initial_organization}})
@@ -28,8 +28,8 @@ class InsiderAuctionComplaintDocumentResourceTest(BaseInsiderAuctionWebTest, Ins
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionComplaintDocumentResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionComplaintResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionComplaintDocumentResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionComplaintResourceTest))
     return tests
 
 

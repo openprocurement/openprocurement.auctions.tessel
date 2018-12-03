@@ -19,7 +19,7 @@ from openprocurement.auctions.tessel.utils import check_status
             path='/auctions/{auction_id}',
             auctionsprocurementMethodType="tessel",
             description="Open Contracting compatible data exchange format. See http://ocds.open-contracting.org/standard/r/master/#auction for more info")
-class InsiderAuctionResource(AuctionResource):
+class TesselAuctionResource(AuctionResource):
 
     @json_view(content_type="application/json", validators=(validate_patch_auction_data,), permission='edit_auction')
     def patch(self):

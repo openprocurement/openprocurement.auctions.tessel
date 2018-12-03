@@ -7,32 +7,32 @@ from openprocurement.auctions.core.tests.blanks.auction_blanks import (
     post_auction_auction_document
 )
 from openprocurement.auctions.tessel.tests.base import (
-    BaseInsiderAuctionWebTest,
+    BaseTesselAuctionWebTest,
     test_bids,
     test_organization,
     test_insider_auction_data
 )
 from openprocurement.auctions.tessel.tests.blanks.auction_blanks import (
-    # InsiderAuctionAuctionResourceTest
+    # TesselAuctionAuctionResourceTest
     get_auction_auction,
     post_auction_auction,
     patch_auction_auction,
-    # InsiderAuctionBidInvalidationAuctionResourceTest
+    # TesselAuctionBidInvalidationAuctionResourceTest
     post_auction_all_invalid_bids,
     post_auction_one_bid_without_value,
     post_auction_zero_bids,
     post_auction_one_valid_bid,
-    # InsiderAuctionDraftBidAuctionResourceTest
+    # TesselAuctionDraftBidAuctionResourceTest
     post_auction_all_draft_bids,
-    # InsiderAuctionSameValueAuctionResourceTest
+    # TesselAuctionSameValueAuctionResourceTest
     post_auction_auction_not_changed,
     post_auction_auction_reversed,
-    # InsiderAuctionNoBidsResourceTest
+    # TesselAuctionNoBidsResourceTest
     post_auction_no_bids
 )
 
 
-class InsiderAuctionAuctionResourceTest(BaseInsiderAuctionWebTest):
+class TesselAuctionAuctionResourceTest(BaseTesselAuctionWebTest):
     initial_status = 'active.tendering'
     initial_bids = test_bids
 
@@ -43,7 +43,7 @@ class InsiderAuctionAuctionResourceTest(BaseInsiderAuctionWebTest):
     test_post_auction_auction_document = snitch(post_auction_auction_document)
 
 
-class InsiderAuctionBidInvalidationAuctionResourceTest(BaseInsiderAuctionWebTest):
+class TesselAuctionBidInvalidationAuctionResourceTest(BaseTesselAuctionWebTest):
     initial_status = 'active.auction'
     initial_data = test_insider_auction_data
     initial_bids = [
@@ -63,7 +63,7 @@ class InsiderAuctionBidInvalidationAuctionResourceTest(BaseInsiderAuctionWebTest
     test_post_auction_one_valid_bid = snitch(post_auction_one_valid_bid)
 
 
-class InsiderAuctionDraftBidAuctionResourceTest(BaseInsiderAuctionWebTest):
+class TesselAuctionDraftBidAuctionResourceTest(BaseTesselAuctionWebTest):
     initial_status = 'active.auction'
     # initial_data = test_insider_auction_data
     initial_bids = [
@@ -81,7 +81,7 @@ class InsiderAuctionDraftBidAuctionResourceTest(BaseInsiderAuctionWebTest):
     test_post_auction_all_draft_bids = snitch(post_auction_all_draft_bids)
 
 
-class InsiderAuctionSameValueAuctionResourceTest(BaseInsiderAuctionWebTest):
+class TesselAuctionSameValueAuctionResourceTest(BaseTesselAuctionWebTest):
     initial_status = 'active.auction'
     initial_bids = [
         {
@@ -98,7 +98,7 @@ class InsiderAuctionSameValueAuctionResourceTest(BaseInsiderAuctionWebTest):
     test_post_auction_auction_reversed = snitch(post_auction_auction_reversed)
 
 
-class InsiderAuctionNoBidsResourceTest(BaseInsiderAuctionWebTest):
+class TesselAuctionNoBidsResourceTest(BaseTesselAuctionWebTest):
     initial_status = 'active.auction'
 
     test_post_auction_zero_bids = snitch(post_auction_no_bids)
@@ -106,11 +106,11 @@ class InsiderAuctionNoBidsResourceTest(BaseInsiderAuctionWebTest):
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionAuctionResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionBidInvalidationAuctionResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionDraftBidAuctionResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionSameValueAuctionResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionNoBidsResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionAuctionResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionBidInvalidationAuctionResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionDraftBidAuctionResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionSameValueAuctionResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionNoBidsResourceTest))
     return tests
 
 

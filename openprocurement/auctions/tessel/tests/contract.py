@@ -15,7 +15,7 @@ from openprocurement.auctions.core.utils import (
 )
 
 from openprocurement.auctions.tessel.tests.base import (
-    BaseInsiderAuctionWebTest, test_bids,
+    BaseTesselAuctionWebTest, test_bids,
 )
 
 
@@ -39,8 +39,8 @@ DOCUMENTS = {
 
 
 
-class InsiderAuctionContractResourceTest(
-    BaseInsiderAuctionWebTest,
+class TesselAuctionContractResourceTest(
+    BaseTesselAuctionWebTest,
     AuctionContractResourceTestMixin,
     AuctionContractV3_1ResourceTestCaseMixin,
 ):
@@ -49,7 +49,7 @@ class InsiderAuctionContractResourceTest(
 
     def setUp(self):
         self.initial_data['value']['amount'] = 479.0 / 2
-        super(InsiderAuctionContractResourceTest, self).setUp()
+        super(TesselAuctionContractResourceTest, self).setUp()
         # Create award
         authorization = self.app.authorization
         self.app.authorization = ('Basic', ('auction', ''))
@@ -155,14 +155,14 @@ class InsiderAuctionContractResourceTest(
 
 
 
-class InsiderAuctionContractDocumentResourceTest(BaseInsiderAuctionWebTest, AuctionContractDocumentResourceTestMixin):
+class TesselAuctionContractDocumentResourceTest(BaseTesselAuctionWebTest, AuctionContractDocumentResourceTestMixin):
     #initial_data = auction_data
     initial_status = 'active.auction'
     initial_bids = test_bids
     docservice = True
 
     def setUp(self):
-        super(InsiderAuctionContractDocumentResourceTest, self).setUp()
+        super(TesselAuctionContractDocumentResourceTest, self).setUp()
         # Create award
         authorization = self.app.authorization
         self.app.authorization = ('Basic', ('auction', ''))
@@ -219,8 +219,8 @@ class InsiderAuctionContractDocumentResourceTest(BaseInsiderAuctionWebTest, Auct
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionContractResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionContractDocumentResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionContractResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionContractDocumentResourceTest))
     return tests
 
 

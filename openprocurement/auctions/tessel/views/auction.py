@@ -21,7 +21,7 @@ from openprocurement.auctions.tessel.validation import (
             path='/auctions/{auction_id}/auction/{auction_lot_id}',
             auctionsprocurementMethodType="tessel",
             description="Tessel auction auction data")
-class InsiderAuctionAuctionResource(AuctionAuctionResource):
+class TesselAuctionAuctionResource(AuctionAuctionResource):
 
     @json_view(permission='auction')
     def collection_get(self):
