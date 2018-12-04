@@ -14,7 +14,7 @@ from openprocurement.auctions.tessel.constants import (
     CONTRACT_TYPES
 )
 
-# InsiderAuctionTest
+# TesselAuctionTest
 
 
 def create_role(self):
@@ -42,7 +42,7 @@ def edit_role(self):
         self.assertEqual(set(self.auction._fields).intersection(role.fields), fields)
 
 
-# InsiderAuctionResourceTest
+# TesselAuctionResourceTest
 
 
 def create_auction_invalid(self):
@@ -419,7 +419,7 @@ def check_daylight_savings_timezone(self):
         list_of_timezone_bools.append(timezone_before != timezone_after)
     self.assertTrue(any(list_of_timezone_bools))
 
-# InsiderAuctionProcessTest
+# TesselAuctionProcessTest
 
 
 def first_bid_auction(self):

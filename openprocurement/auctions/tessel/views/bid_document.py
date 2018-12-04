@@ -13,7 +13,7 @@ from openprocurement.auctions.tessel.constants import TENDER_PERIOD_STATUSES
             path='/auctions/{auction_id}/bids/{bid_id}/documents/{document_id}',
             auctionsprocurementMethodType="tessel",
             description="Tessel auction bidder documents")
-class InsiderAuctionBidDocumentResource(AuctionBidDocumentResource):
+class TesselAuctionBidDocumentResource(AuctionBidDocumentResource):
 
     def validate_bid_document(self, operation):
         auction = self.request.validated['auction']

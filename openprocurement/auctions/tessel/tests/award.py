@@ -14,17 +14,17 @@ from openprocurement.auctions.core.tests.plugins.awarding.v3_1.tests.award impor
 from openprocurement.auctions.core.utils import get_now, get_related_contract_of_award
 
 from openprocurement.auctions.tessel.tests.base import (
-    BaseInsiderAuctionWebTest,
+    BaseTesselAuctionWebTest,
     test_bids,
 )
 
 
-class InsiderAuctionCreateAwardTest(BaseInsiderAuctionWebTest, CreateAuctionAwardTestMixin):
+class TesselAuctionCreateAwardTest(BaseTesselAuctionWebTest, CreateAuctionAwardTestMixin):
     initial_status = 'active.auction'
     initial_bids = test_bids
 
 
-class InsiderAuctionAwardProcessTest(BaseInsiderAuctionWebTest, AuctionAwardProcessTestMixin):
+class TesselAuctionAwardProcessTest(BaseTesselAuctionWebTest, AuctionAwardProcessTestMixin):
     #initial_data = auction_data
     initial_status = 'active.auction'
     initial_bids = test_bids
@@ -159,7 +159,7 @@ class InsiderAuctionAwardProcessTest(BaseInsiderAuctionWebTest, AuctionAwardProc
         self.assertEqual('auction_owner', response.json["data"][1]["author"])
 
     def setUp(self):
-        super(InsiderAuctionAwardProcessTest, self).setUp()
+        super(TesselAuctionAwardProcessTest, self).setUp()
 
         authorization = self.app.authorization
         self.app.authorization = ('Basic', ('auction', ''))
@@ -196,13 +196,13 @@ class InsiderAuctionAwardProcessTest(BaseInsiderAuctionWebTest, AuctionAwardProc
         self.app.authorization = authorization
 
 
-class InsiderAuctionAwardDocumentResourceTest(BaseInsiderAuctionWebTest,
+class TesselAuctionAwardDocumentResourceTest(BaseTesselAuctionWebTest,
                                               AuctionAwardDocumentResourceTestMixin):
     initial_status = 'active.auction'
     initial_bids = test_bids
 
     def setUp(self):
-        super(InsiderAuctionAwardDocumentResourceTest, self).setUp()
+        super(TesselAuctionAwardDocumentResourceTest, self).setUp()
         authorization = self.app.authorization
         self.app.authorization = ('Basic', ('auction', ''))
         now = get_now()
@@ -239,9 +239,9 @@ class InsiderAuctionAwardDocumentResourceTest(BaseInsiderAuctionWebTest,
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionCreateAwardTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionAwardProcessTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionAwardDocumentResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionCreateAwardTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionAwardProcessTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionAwardDocumentResourceTest))
     return tests
 
 

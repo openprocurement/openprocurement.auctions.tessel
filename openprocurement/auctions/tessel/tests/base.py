@@ -141,7 +141,7 @@ for data in test_insider_auction_data, test_insider_auction_data_with_schema:
     del data['minimalStep']
 
 
-class BaseInsiderWebTest(BaseWebTest):
+class BaseTesselWebTest(BaseWebTest):
 
     """Base Web Test to test openprocurement.auctions.tessel.
 
@@ -152,7 +152,7 @@ class BaseInsiderWebTest(BaseWebTest):
     mock_config = MOCK_CONFIG
 
 
-class BaseInsiderAuctionWebTest(BaseAuctionWebTest):
+class BaseTesselAuctionWebTest(BaseAuctionWebTest):
     relative_to = os.path.dirname(__file__)
     initial_data = test_insider_auction_data
     initial_organization = test_organization

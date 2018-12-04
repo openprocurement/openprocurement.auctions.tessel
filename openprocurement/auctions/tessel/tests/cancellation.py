@@ -2,7 +2,7 @@
 import unittest
 
 from openprocurement.auctions.tessel.tests.base import (
-    BaseInsiderAuctionWebTest, test_bids,
+    BaseTesselAuctionWebTest, test_bids,
 )
 from openprocurement.auctions.core.tests.cancellation import (
     AuctionCancellationResourceTestMixin,
@@ -10,17 +10,17 @@ from openprocurement.auctions.core.tests.cancellation import (
 )
 
 
-class InsiderAuctionCancellationResourceTest(BaseInsiderAuctionWebTest,
+class TesselAuctionCancellationResourceTest(BaseTesselAuctionWebTest,
                                              AuctionCancellationResourceTestMixin):
     initial_status = 'active.tendering'
     initial_bids = test_bids
 
 
-class InsiderAuctionCancellationDocumentResourceTest(BaseInsiderAuctionWebTest,
+class TesselAuctionCancellationDocumentResourceTest(BaseTesselAuctionWebTest,
                                                      AuctionCancellationDocumentResourceTestMixin):
 
     def setUp(self):
-        super(InsiderAuctionCancellationDocumentResourceTest, self).setUp()
+        super(TesselAuctionCancellationDocumentResourceTest, self).setUp()
         # Create cancellation
         response = self.app.post_json('/auctions/{}/cancellations?acc_token={}'.format(
             self.auction_id, self.auction_token
@@ -31,8 +31,8 @@ class InsiderAuctionCancellationDocumentResourceTest(BaseInsiderAuctionWebTest,
 
 def suite():
     tests = unittest.TestSuite()
-    tests.addTest(unittest.makeSuite(InsiderAuctionCancellationResourceTest))
-    tests.addTest(unittest.makeSuite(InsiderAuctionCancellationDocumentResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionCancellationResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionCancellationDocumentResourceTest))
     return tests
 
 

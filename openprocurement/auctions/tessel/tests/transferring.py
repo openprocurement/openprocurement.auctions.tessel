@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from openprocurement.auctions.tessel.tests.base import BaseInsiderAuctionWebTest
+from openprocurement.auctions.tessel.tests.base import BaseTesselAuctionWebTest
 from openprocurement.auctions.core.tests.base import snitch
 from openprocurement.auctions.core.tests.plugins.transferring.mixins import AuctionOwnershipChangeTestCaseMixin
 from openprocurement.auctions.core.tests.plugins.transferring.blanks.resource_blanks import (
@@ -10,7 +10,7 @@ from openprocurement.auctions.core.tests.plugins.transferring.blanks.resource_bl
 from openprocurement.auctions.tessel.tests.blanks.transferring_blanks import check_pending_activation
 
 
-class AuctionOwnershipChangeResourceTest(BaseInsiderAuctionWebTest, AuctionOwnershipChangeTestCaseMixin):
+class AuctionOwnershipChangeResourceTest(BaseTesselAuctionWebTest, AuctionOwnershipChangeTestCaseMixin):
     first_owner = 'broker3'
     second_owner = 'broker3'
     concierge = 'concierge'

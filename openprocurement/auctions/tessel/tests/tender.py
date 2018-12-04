@@ -22,28 +22,28 @@ from openprocurement.auctions.tessel.models import TesselAuction
 from openprocurement.auctions.tessel.tests.base import (
     test_insider_auction_data,
     test_organization,
-    BaseInsiderAuctionWebTest, BaseInsiderWebTest,
+    BaseTesselAuctionWebTest, BaseTesselWebTest,
     test_insider_auction_data_with_schema
 )
 from openprocurement.auctions.tessel.tests.blanks.tender_blanks import (
-    # InsiderAuctionTest
+    # TesselAuctionTest
     create_role,
     edit_role,
-    # InsiderAuctionResourceTest
+    # TesselAuctionResourceTest
     create_auction_in_pending_activation,
     create_auction_invalid,
     create_auction_auctionPeriod,
     create_auction_generated,
     create_auction,
     check_daylight_savings_timezone,
-    # InsiderAuctionProcessTest
+    # TesselAuctionProcessTest
     first_bid_auction,
     auctionUrl_in_active_auction,
     suspended_auction
 )
 
 
-class InsiderAuctionTest(BaseInsiderWebTest):
+class TesselAuctionTest(BaseTesselWebTest):
     auction = TesselAuction
     initial_data = test_insider_auction_data
 
@@ -52,7 +52,7 @@ class InsiderAuctionTest(BaseInsiderWebTest):
     test_edit_role = snitch(edit_role)
 
 
-class InsiderAuctionResourceTest(BaseInsiderWebTest, AuctionResourceTestMixin, DgfInsiderResourceTestMixin):
+class TesselAuctionResourceTest(BaseTesselWebTest, AuctionResourceTestMixin, DgfInsiderResourceTestMixin):
     initial_status = 'active.tendering'
     initial_data = test_insider_auction_data
     initial_organization = test_organization
@@ -67,13 +67,13 @@ class InsiderAuctionResourceTest(BaseInsiderWebTest, AuctionResourceTestMixin, D
     test_create_auction_in_pending_activation = snitch(create_auction_in_pending_activation)
 
 
-class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
+class TesselAuctionProcessTest(BaseTesselAuctionWebTest):
     test_financial_organization = test_organization
     docservice = True
 
-    # setUp = BaseInsiderWebTest.setUp
+    # setUp = BaseTesselWebTest.setUp
     def setUp(self):
-        super(InsiderAuctionProcessTest.__bases__[0], self).setUp()
+        super(TesselAuctionProcessTest.__bases__[0], self).setUp()
 
     def test_auctionParameters(self):
         data = deepcopy(self.initial_data)
@@ -145,7 +145,7 @@ class InsiderAuctionProcessTest(BaseInsiderAuctionWebTest):
     test_suspended_auction = snitch(suspended_auction)
 
 
-class InsiderAuctionSchemaResourceTest(InsiderAuctionResourceTest):
+class TesselAuctionSchemaResourceTest(TesselAuctionResourceTest):
     initial_data = test_insider_auction_data_with_schema
 
     # def test_create_auction_with_bad_schemas_code(self):
@@ -168,21 +168,21 @@ class InsiderAuctionSchemaResourceTest(InsiderAuctionResourceTest):
     #                      }])
 
 
-class InsiderAuctionSchemaProcessTest(InsiderAuctionProcessTest):
+class TesselAuctionSchemaProcessTest(TesselAuctionProcessTest):
     initial_data = test_insider_auction_data_with_schema
 
 
-class AuctionExtractCredentialsTest(BaseInsiderAuctionWebTest, ExtractCredentialsMixin):
+class AuctionExtractCredentialsTest(BaseTesselAuctionWebTest, ExtractCredentialsMixin):
     pass
 
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(InsiderAuctionProcessTest))
-    suite.addTest(unittest.makeSuite(InsiderAuctionResourceTest))
-    suite.addTest(unittest.makeSuite(InsiderAuctionTest))
-    suite.addTest(unittest.makeSuite(InsiderAuctionSchemaResourceTest))
-    suite.addTest(unittest.makeSuite(InsiderAuctionSchemaProcessTest))
+    suite.addTest(unittest.makeSuite(TesselAuctionProcessTest))
+    suite.addTest(unittest.makeSuite(TesselAuctionResourceTest))
+    suite.addTest(unittest.makeSuite(TesselAuctionTest))
+    suite.addTest(unittest.makeSuite(TesselAuctionSchemaResourceTest))
+    suite.addTest(unittest.makeSuite(TesselAuctionSchemaProcessTest))
     suite.addTest(unittest.makeSuite(AuctionExtractCredentialsTest))
     return suite
 
