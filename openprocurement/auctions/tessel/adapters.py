@@ -9,6 +9,9 @@ from openprocurement.auctions.core.adapters import (
 from openprocurement.auctions.core.plugins.awarding.v3_1.adapters import (
     AwardingV3_1ConfiguratorMixin
 )
+from openprocurement.auctions.core.plugins.contracting.v3_1.adapters import (
+    ContractingV3_1ConfiguratorMixin
+)
 from openprocurement.auctions.core.utils import (
     calculate_business_date,
     SANDBOX_MODE,
@@ -23,7 +26,8 @@ from openprocurement.auctions.tessel.validation import validate_post_auction_sta
 
 
 class AuctionTesselConfigurator(AuctionConfigurator,
-                                AwardingV3_1ConfiguratorMixin):
+                                AwardingV3_1ConfiguratorMixin,
+                                ContractingV3_1ConfiguratorMixin):
     name = 'Auction Tessel Configurator'
     model = TesselAuction
     pending_admission_for_one_bid = False
