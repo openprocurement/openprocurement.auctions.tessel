@@ -23,6 +23,7 @@ Contents:
    overview
    procedureWorkflow
    standard/index
+   awardWorkflow
    tutorial
    acceleration
    upload
