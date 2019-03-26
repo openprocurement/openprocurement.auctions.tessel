@@ -19,24 +19,12 @@ from openprocurement.auctions.core.utils import get_now
 from openprocurement.auctions.tessel.tests.base import (
     BaseTesselAuctionWebTest, test_bids,
 )
-from openprocurement.auctions.tessel.tests.blanks.chronograph_blanks import (
-    # TesselAuctionAuctionPeriodResourceTest
-    set_auction_period,
-    reset_auction_period
-)
 
 
 class TesselAuctionSwitchAuctionResourceTest(BaseTesselAuctionWebTest):
     initial_bids = test_bids
 
     test_switch_to_auction = snitch(switch_to_auction)
-
-
-class TesselAuctionAuctionPeriodResourceTest(BaseTesselAuctionWebTest):
-    initial_bids = test_bids
-
-    test_set_auction_period = snitch(set_auction_period)
-    test_reset_auction_period = snitch(reset_auction_period)
 
 
 class TesselAuctionAwardSwitchResourceTest(BaseTesselAuctionWebTest, AuctionAwardSwitchResourceTestMixin):
@@ -125,11 +113,9 @@ class TesselAuctionDontSwitchSuspendedAuction2ResourceTest(BaseTesselAuctionWebT
     test_switch_suspended_auction_to_auction = snitch(switch_suspended_auction_to_auction)
 
 
-
 def suite():
     tests = unittest.TestSuite()
     tests.addTest(unittest.makeSuite(TesselAuctionSwitchAuctionResourceTest))
-    tests.addTest(unittest.makeSuite(TesselAuctionAuctionPeriodResourceTest))
     tests.addTest(unittest.makeSuite(TesselAuctionAwardSwitchResourceTest))
     tests.addTest(unittest.makeSuite(TesselAuctionAwardSwitch2ResourceTest))
     tests.addTest(unittest.makeSuite(TesselAuctionDontSwitchSuspendedAuction2ResourceTest))
