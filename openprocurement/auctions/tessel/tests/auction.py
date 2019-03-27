@@ -28,7 +28,10 @@ from openprocurement.auctions.tessel.tests.blanks.auction_blanks import (
     post_auction_auction_not_changed,
     post_auction_auction_reversed,
     # TesselAuctionNoBidsResourceTest
-    post_auction_no_bids
+    post_auction_no_bids,
+    # TesselAuctionBridgePatchPeriod
+    set_auction_period,
+    reset_auction_period
 )
 
 
@@ -104,6 +107,13 @@ class TesselAuctionNoBidsResourceTest(BaseTesselAuctionWebTest):
     test_post_auction_zero_bids = snitch(post_auction_no_bids)
 
 
+class TesselAuctionBridgePatchPeriodTest(BaseTesselAuctionWebTest):
+    initial_bids = test_bids
+
+    test_set_auction_period = snitch(set_auction_period)
+    test_reset_auction_period = snitch(reset_auction_period)
+
+
 def suite():
     tests = unittest.TestSuite()
     tests.addTest(unittest.makeSuite(TesselAuctionAuctionResourceTest))
@@ -111,6 +121,7 @@ def suite():
     tests.addTest(unittest.makeSuite(TesselAuctionDraftBidAuctionResourceTest))
     tests.addTest(unittest.makeSuite(TesselAuctionSameValueAuctionResourceTest))
     tests.addTest(unittest.makeSuite(TesselAuctionNoBidsResourceTest))
+    tests.addTest(unittest.makeSuite(TesselAuctionBridgePatchPeriodTest))
     return tests
 
 
