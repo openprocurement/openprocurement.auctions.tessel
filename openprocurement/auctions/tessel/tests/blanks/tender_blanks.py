@@ -611,6 +611,22 @@ def first_bid_auction(self):
 
 
     self.app.authorization = ('Basic', ('broker', ''))
+    #  set contract value
+    response = self.app.patch_json(
+        '/auctions/{}/contracts/{}?acc_token={}'.format(
+            self.auction_id, contract_id, owner_token
+        ),
+        {
+            "data": {
+                "value": {
+                    "currency": "UAH",
+                    "amount": 500,
+                    "valueAddedTaxIncluded": True,
+                },
+            }
+        },
+        status=200
+    )
     self.app.patch_json('/auctions/{}/contracts/{}?acc_token={}'.format(auction_id, contract_id, owner_token), {"data": {"status": "active"}})
     # check status
     self.app.authorization = ('Basic', ('broker', ''))
@@ -911,6 +927,21 @@ def suspended_auction(self):
     ), {"data": {"dateSigned": signature_date}})
     self.assertEqual(response.status, '200 OK')
 
+    response = self.app.patch_json(
+        '/auctions/{}/contracts/{}?acc_token={}'.format(
+            self.auction_id, contract_id, owner_token
+        ),
+        {
+            "data": {
+                "value": {
+                    "currency": "UAH",
+                    "amount": 500,
+                    "valueAddedTaxIncluded": True,
+                },
+            }
+        },
+        status=200
+    )
     response = self.app.patch_json(
         '/auctions/{}/contracts/{}?acc_token={}'.format(auction_id, contract_id, owner_token),
         {"data": {"status": "active"}}
